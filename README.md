@@ -1,4 +1,4 @@
-# smart_commute
+# Smart Commute
 
 A new Flutter project.
 
