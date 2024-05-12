@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "91681130800",
+    "project_id": "smart-security-coeai",
+    "storage_bucket": "smart-security-coeai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91681130800:android:ac6746243553cca427a0f5",
+        "android_client_info": {
+          "package_name": "com.example.smart_commute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91681130800-ve4s7abio2296vf64m86kt0lugcelrk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smart_commute",
+            "certificate_hash": "c9c479e18843df811274e346e6cfe78685a5e8b7"
+          }
+        },
+        {
+          "client_id": "91681130800-8a6bcsladq0ger1tp9cvud9njkltuies.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1YLy6MuIbhNkuubTr4bEQB3GyUCuXRBE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91681130800-8a6bcsladq0ger1tp9cvud9njkltuies.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "91681130800-6rjsimj7gh2br5vik9c0t37mvmc66ofl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartCommute"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
