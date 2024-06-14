@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_commute/Theme/theme.dart';
+import 'package:smart_commute/screens/home.dart';
+import 'package:smart_commute/theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
 import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
-import 'package:smart_commute/screens/homepage.dart';
+import 'package:smart_commute/screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await dotenv.load(fileName: ".env");
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 

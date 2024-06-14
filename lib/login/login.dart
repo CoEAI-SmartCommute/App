@@ -21,15 +21,17 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             height: 100,
             width: MediaQuery.of(context).size.width,
-            color: Colors.black,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Hey there \nWelcome back',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 35,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold)),
+            color: Theme.of(context).colorScheme.primary,
+            child: const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Welcome to Saarthi',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 35,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+              ),
             ),
           ),
           const SizedBox(height: 50),
@@ -58,9 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       listen: false,
                     );
                     await provider.googleLogin();
-
+                    if (!mounted) return;
                     Navigator.of(context).pop();
-                   
                   },
                 ),
               ),
