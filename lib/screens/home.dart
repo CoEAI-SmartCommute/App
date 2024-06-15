@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/components/home/bottomsheet.dart';
 import 'package:smart_commute/components/home/floatingbutton.dart';
 import 'package:smart_commute/components/home/homeoptionbutton.dart';

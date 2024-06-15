@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/components/home/bottomsheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:smart_commute/components/home/savedlocations.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/profile.dart';
 
@@ -14,17 +15,16 @@ class HomeBottomSheet extends StatefulWidget {
 }
 
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
-  double _sheetPosition = 0.2;
-  final double _dragSensitivity = 600;
+  
   @override
   Widget build(BuildContext context) {
-    // final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    double sheetPosition = MediaQuery.of(context).size.height*0.00018;
     final user = FirebaseAuth.instance.currentUser;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.2,
-      minChildSize: 0.1,
-      maxChildSize: 1.0,
+      initialChildSize: sheetPosition,
+      minChildSize: sheetPosition,
+      maxChildSize: MediaQuery.of(context).size.height * 0.0011,
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
@@ -89,6 +89,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SavedLocations(),
                 ],
               ),
             ),

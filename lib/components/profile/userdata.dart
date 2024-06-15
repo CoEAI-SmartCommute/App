@@ -30,7 +30,7 @@ class UserData extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height:8,
+          height: 8,
         ),
         Text(
           user.email!,
@@ -43,7 +43,7 @@ class UserData extends StatelessWidget {
           height: 8,
         ),
         Text(
-          user.phoneNumber!,
+          user.phoneNumber!.isEmpty ? '+91 xxxxx xxxxx' : user.phoneNumber!,
           style: const TextStyle(
             fontSize: 15,
             color: Color(0xff868782),

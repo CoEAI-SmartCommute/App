@@ -41,7 +41,6 @@ class GoogleSignInProvider extends ChangeNotifier {
       "email": googleUser.email,
       "name": googleUser.displayName,
       "profilepic": googleUser.photoUrl,
-      "level": 0,
     });
   }
 
