@@ -15,20 +15,36 @@ class ProfileFriends extends StatefulWidget {
 class _ProfileFriendsState extends State<ProfileFriends> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const ContactCard(),
-          Divider(
-            color: Theme.of(context).colorScheme.secondary,
+    return Column(
+      children: [
+        const Row(
+          children: [
+            Text(
+              'Friend Contacts',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Container(
+          // padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const ContactCard(),
+              Divider(
+                color: Colors.grey[300],
+              ),
+              const AddFriendButton()
+            ],
           ),
-          const AddFriendButton()
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

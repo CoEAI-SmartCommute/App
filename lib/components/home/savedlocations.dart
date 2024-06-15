@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ionicons/ionicons.dart';
 
 class SavedLocations extends StatefulWidget {
@@ -12,13 +13,25 @@ class _SavedLocationsState extends State<SavedLocations> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(),
-      child: Column(children: [
+      // decoration: const BoxDecoration(),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Your Saved Locations'),
-            TextButton(onPressed: () {}, child: const Text('More'))
+            const Text('Your Saved Locations',
+                style: TextStyle(fontSize: 15, color: Colors.grey)),
+            GestureDetector(
+              onTap: () {
+                // Implement your "More" functionality here
+              },
+              child: const Text(
+                'More',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
           ],
         ),
         const SizedBox(

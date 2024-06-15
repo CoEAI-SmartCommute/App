@@ -4,6 +4,7 @@ import 'package:smart_commute/components/home/bottomsheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:smart_commute/components/home/savedlocations.dart';
+import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/profile.dart';
 
@@ -15,10 +16,9 @@ class HomeBottomSheet extends StatefulWidget {
 }
 
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
-  
   @override
   Widget build(BuildContext context) {
-    double sheetPosition = MediaQuery.of(context).size.height*0.00018;
+    double sheetPosition = MediaQuery.of(context).size.height * 0.00018;
     final user = FirebaseAuth.instance.currentUser;
 
     return DraggableScrollableSheet(
@@ -89,6 +89,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const ManualRoutes(),
                   const SizedBox(
                     height: 20,
                   ),

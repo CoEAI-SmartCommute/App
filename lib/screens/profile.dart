@@ -18,32 +18,18 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const UserData(),
-            const SizedBox(
+            UserData(),
+            SizedBox(
               height: 22,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Friend Contacts',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            const ProfileFriends(),
-            const Expanded(child: SizedBox()),
-            const ProfileLogout(),
+            ProfileFriends(),
+            Expanded(child: SizedBox()),
+            ProfileLogout(),
           ],
         ),
       ),
