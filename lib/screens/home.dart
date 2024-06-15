@@ -20,12 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingButton(),
       body: Stack(
         alignment: Alignment.topRight,
-        children: [
-          HomeMap(),
-          HomeOptionButton(),
-        ],
+        children: [HomeMap(), HomeOptionButton(), HomeBottomSheet()],
       ),
-      bottomSheet: HomeBottomSheet(),
     );
   }
 }
