@@ -28,6 +28,9 @@ class _HomeMapState extends State<HomeMap> {
   }
 
   void initLocationService() async {
+    final permission = await _locationService.requestPermission();
+    _permission = permission == PermissionStatus.granted;
+
     await _locationService.changeSettings(
       accuracy: LocationAccuracy.high,
       interval: 1000,
@@ -41,8 +44,8 @@ class _HomeMapState extends State<HomeMap> {
       serviceEnabled = await _locationService.serviceEnabled();
 
       if (serviceEnabled) {
-        final permission = await _locationService.requestPermission();
-        _permission = permission == PermissionStatus.granted;
+        // final permission = await _locationService.requestPermission();
+        // _permission = permission == PermissionStatus.granted;
 
         if (_permission) {
           location = await _locationService.getLocation();
@@ -100,7 +103,7 @@ class _HomeMapState extends State<HomeMap> {
               alignment: Alignment.center,
               child: Icon(
                 Icons.circle,
-                size: MediaQuery.of(context).size.width*0.04,
+                size: MediaQuery.of(context).size.width * 0.04,
                 color: appTheme.colorScheme.primary,
               ))
         ]);
