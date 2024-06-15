@@ -1,9 +1,9 @@
+import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:smart_commute/screens/home.dart';
+import 'package:smart_commute/screens/profile.dart';
 
 class HomeBottomSheet extends StatefulWidget {
   const HomeBottomSheet({super.key});
@@ -55,17 +55,23 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      hintText: 'Hi! Where do you want to go ?'),
+                      hintText: 'Hi ! Where do you want to go ?'),
                 ),
               ),
-              ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: user!.photoURL!,
-                  fit: BoxFit.cover,
-                  height: 42,
-                  width: 42,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
+              GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                ),
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: user!.photoURL!,
+                    fit: BoxFit.cover,
+                    height: 42,
+                    width: 42,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                  ),
                 ),
               )
             ],

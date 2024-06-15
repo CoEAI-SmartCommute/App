@@ -1,36 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smart_commute/login/googlesignin.dart';
+import 'package:smart_commute/components/profile/logout.dart';
+import 'package:smart_commute/components/profile/userdata.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hello World'),
+        title: const Text('Profile'),
       ),
-      body: Column(
-        children: [
-          Text('Hello,${user!.displayName} '),
-          ElevatedButton(
-            onPressed: () async {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const Center(child: CircularProgressIndicator());
-                  });
-              final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
-              await provider.logout();
-              Navigator.pop(context);
-            },
-            child: const Text('Logout'),
-          )
-        ],
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              UserData(),
+              ProfileLogout(),
+            ],
+          ),
+        ),
       ),
     );
   }

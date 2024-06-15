@@ -9,7 +9,6 @@ import 'package:smart_commute/theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
 import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
-import 'package:smart_commute/screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
