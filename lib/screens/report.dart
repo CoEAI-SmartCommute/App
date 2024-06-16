@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:smart_commute/services/camera.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -87,9 +89,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               ),
                             ),
                             color: const Color(0xffe8e8e8),
-                            onPressed: () async {
-                              final permission = await storagePermission();
-                              getImageGallery();
+                            onPressed: () {
+                              imgInput();
                             },
                             child: const Text('Browse Images'),
                           )
@@ -97,15 +98,19 @@ class _ReportScreenState extends State<ReportScreen> {
                       ),
                     )
                   : GestureDetector(
-                      onTap: getImageGallery,
+                      onTap: () {
+                        imgInput();
+                      },
                       child: Center(
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            _selectedImage!.path,
+                          child: Image.file(
                             height: 200,
                             width: MediaQuery.of(context).size.width,
                             fit: BoxFit.cover,
+                            File(
+                              _selectedImage!.path,
+                            ),
                           ),
                         ),
                       ),
@@ -137,6 +142,58 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
+  Future imgInput() async {
+    await storagePermission();
+    if (!context.mounted) return;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Upload Image',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            content: const SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                    'From where would you like to upload image ?',
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Gallery'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  final DeviceInfoPlugin info = DeviceInfoPlugin();
+                  final AndroidDeviceInfo androidInfo = await info.androidInfo;
+                  final int androidVersion =
+                      int.parse(androidInfo.version.release);
+                  if (androidVersion >= 13) {
+                    getFromCamera13();
+                  } else {
+                    getImageGallery();
+                  }
+                },
+              ),
+              TextButton(
+                child: const Text('Camera'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  getImageCamera();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Future getImageGallery() async {
     List<Media>? res = await ImagesPicker.pick(
       count: 1,
@@ -144,6 +201,23 @@ class _ReportScreenState extends State<ReportScreen> {
     );
     setState(() {
       _selectedImage = File(res!.first.path);
+    });
+  }
+
+  Future getFromCamera13() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('We are facing some issue.Try again later'),
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _selectedImage = File(returnedImage.path);
     });
   }
 
@@ -171,5 +245,22 @@ class _ReportScreenState extends State<ReportScreen> {
     }
 
     return havePermission;
+  }
+
+  Future getImageCamera() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Camera(
+          onPickedImage: (File pickedImage) {
+            if (mounted) {
+              setState(() {
+                _selectedImage = File(pickedImage.path);
+              });
+            }
+          },
+        ),
+      ),
+    );
   }
 }

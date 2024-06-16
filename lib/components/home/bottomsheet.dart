@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
+import 'package:smart_commute/components/suggestions.dart';
 import 'package:smart_commute/screens/profile.dart';
 import 'package:smart_commute/components/home/forumupdates.dart';
 import 'package:smart_commute/screens/report.dart';
@@ -129,6 +130,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                     height: 20,
                   ),
                   const SavedLocations(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const SuggestionsAi(),
                   const SizedBox(
                     height: 20,
                   ),

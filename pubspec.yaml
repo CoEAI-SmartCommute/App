@@ -55,6 +55,8 @@ dependencies:
   device_info_plus: ^10.1.0
   images_picker: ^1.2.11
   dotted_border: ^2.1.0
+  image_picker: ^1.1.2
+  camera_camera: ^3.0.0
 
 dev_dependencies:
   flutter_test:

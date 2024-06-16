@@ -37,6 +37,8 @@ class _ProfileLogoutState extends State<ProfileLogout> {
           final provider =
               Provider.of<GoogleSignInProvider>(context, listen: false);
           await provider.logout();
+          if (!context.mounted) return;
+          Navigator.pop(context);
         },
         icon: const Icon(
           Ionicons.log_out,

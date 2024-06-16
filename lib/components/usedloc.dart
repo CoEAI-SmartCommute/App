@@ -53,7 +53,7 @@ class SetLocationCard extends StatelessWidget {
         IconButton(
           onPressed: () {},
           icon: const Icon(
-            Ionicons.locate,
+            Ionicons.pin_outline,
             color: Colors.blue,
           ),
           style: IconButton.styleFrom(
