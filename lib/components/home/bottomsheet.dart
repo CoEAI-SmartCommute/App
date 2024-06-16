@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:smart_commute/components/home/bottomsheet.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:smart_commute/components/home/savedlocations.dart';
+import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
-import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/profile.dart';
 
 class HomeBottomSheet extends StatefulWidget {
@@ -18,7 +15,7 @@ class HomeBottomSheet extends StatefulWidget {
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    double sheetPosition = MediaQuery.of(context).size.height * 0.00018;
+    double sheetPosition = MediaQuery.of(context).size.height * 0.00016;
     final user = FirebaseAuth.instance.currentUser;
 
     return DraggableScrollableSheet(

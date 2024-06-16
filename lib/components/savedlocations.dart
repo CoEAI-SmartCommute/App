@@ -19,7 +19,7 @@ class _SavedLocationsState extends State<SavedLocations> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('Your Saved Locations',
-                style: TextStyle(fontSize: 15, color: Colors.grey)),
+                style: TextStyle(fontSize: 15, color: Colors.grey),),
             GestureDetector(
               onTap: () {
                 // Implement your "More" functionality here
