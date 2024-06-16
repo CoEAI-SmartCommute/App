@@ -59,7 +59,8 @@ class _ManualRoutesState extends State<ManualRoutes> {
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Choose starting point',
+                        hintText: 'Choose starting point',
+                        hintStyle: const TextStyle(color: Colors.grey),
                         filled: true,
                         fillColor: Colors.grey[200],
                         isDense: true,
@@ -83,7 +84,8 @@ class _ManualRoutesState extends State<ManualRoutes> {
                     const SizedBox(height: 20),
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Choose Destination',
+                        hintText: 'Choose Destination',
+                        hintStyle: const TextStyle(color: Colors.grey),
                         filled: true,
                         fillColor: Colors.grey[200],
                         isDense: true,

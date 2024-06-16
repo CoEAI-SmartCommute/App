@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/screens/profile.dart';
+import 'package:smart_commute/components/home/forumupdates.dart';
 
 class HomeBottomSheet extends StatefulWidget {
   const HomeBottomSheet({super.key});
@@ -15,19 +16,24 @@ class HomeBottomSheet extends StatefulWidget {
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    double sheetPosition = MediaQuery.of(context).size.height * 0.00016;
+    double sheetPosition = MediaQuery.of(context).size.height * 0.00015;
     final user = FirebaseAuth.instance.currentUser;
 
     return DraggableScrollableSheet(
       initialChildSize: sheetPosition,
       minChildSize: sheetPosition,
-      maxChildSize: MediaQuery.of(context).size.height * 0.0011,
+      maxChildSize: MediaQuery.of(context).size.height * 0.001,
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 5.0,
+                ),
+              ]),
           child: SingleChildScrollView(
             controller: scrollController,
             child: Padding(
@@ -39,7 +45,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                     height: 5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: const Color(0xffBEBFC0),
+                      color: Colors.grey[200],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -54,7 +60,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                           textAlign: TextAlign.left,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 8),
+                                horizontal: 8, vertical: 8),
                             fillColor: const Color(0xffE9E9E9),
                             filled: true,
                             border: OutlineInputBorder(
@@ -64,23 +70,50 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                 style: BorderStyle.none,
                               ),
                             ),
-                            hintText: 'Hi ! Where do you want to go ?',
+                            hintText: 'Hi ! Where do you want to go?',
+                            hintStyle: const TextStyle(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const ProfileScreen()),
+                          // MaterialPageRoute(
+                          //     builder: (context) => const ProfileScreen()),
+                          PageRouteBuilder(
+                            transitionDuration:
+                                const Duration(milliseconds: 500),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    ProfileScreen(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              var begin = Offset(0.0, 1.0);
+                              var end = Offset.zero;
+                              var curve = Curves.ease;
+
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
                         ),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: user!.photoURL!,
-                            fit: BoxFit.cover,
-                            height: 42,
-                            width: 42,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                        child: Hero(
+                          tag: 'profileImage',
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              imageUrl: user!.photoURL!,
+                              fit: BoxFit.cover,
+                              height: 42,
+                              width: 42,
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                            ),
                           ),
                         ),
                       ),
@@ -94,6 +127,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                     height: 20,
                   ),
                   const SavedLocations(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const RecentUpdates()
                 ],
               ),
             ),

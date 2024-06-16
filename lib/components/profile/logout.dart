@@ -18,8 +18,8 @@ class _ProfileLogoutState extends State<ProfileLogout> {
       height: 48,
       child: ElevatedButton.icon(
         style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(
-            Color(0xffEBEBEB),
+          backgroundColor: MaterialStatePropertyAll(
+            Colors.grey[300],
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -38,8 +38,11 @@ class _ProfileLogoutState extends State<ProfileLogout> {
               Provider.of<GoogleSignInProvider>(context, listen: false);
           await provider.logout();
         },
-        icon: const Icon(Ionicons.log_out),
-        label: const Text('Log Out'),
+        icon: const Icon(
+          Ionicons.log_out,
+          color: Colors.blue,
+        ),
+        label: const Text('Log Out', style: TextStyle(color: Colors.blue)),
       ),
     );
   }

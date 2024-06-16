@@ -30,9 +30,18 @@ class _ProfileFriendsState extends State<ProfileFriends> {
         ),
         const SizedBox(height: 10),
         Container(
-          // padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 1.5,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ]),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -124,26 +133,23 @@ class _AddFriendButtonState extends State<AddFriendButton> {
         children: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Ionicons.add,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.blue,
             ),
             style: IconButton.styleFrom(
-              minimumSize: const Size(50, 50),
-              backgroundColor: const Color(0xffebebeb),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              minimumSize: const Size(60, 60),
+              backgroundColor: Colors.grey[200],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: Text(
               'Add Contact',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 17,
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.blue,
               ),
             ),
           )

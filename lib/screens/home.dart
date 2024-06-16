@@ -15,11 +15,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
-      floatingActionButton: FloatingButton(),
       body: Stack(
-        alignment: Alignment.topRight,
-        children: [HomeMap(), HomeOptionButton(), HomeBottomSheet()],
+        children: [
+          HomeMap(),
+          Align(alignment: Alignment.topLeft, child: FloatingButton()),
+          Align(alignment: Alignment.topRight, child: HomeOptionButton()),
+          HomeBottomSheet()
+        ],
       ),
     );
   }

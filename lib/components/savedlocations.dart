@@ -18,8 +18,10 @@ class _SavedLocationsState extends State<SavedLocations> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Your Saved Locations',
-                style: TextStyle(fontSize: 15, color: Colors.grey),),
+            const Text(
+              'Your Saved Locations',
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
             GestureDetector(
               onTap: () {
                 // Implement your "More" functionality here
@@ -71,11 +73,11 @@ class CustomLocButton extends StatelessWidget {
             onPressed: () {},
             icon: Icon(
               icon,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.blue,
             ),
             style: IconButton.styleFrom(
               minimumSize: const Size(60, 60),
-              backgroundColor: const Color(0xffebebeb),
+              backgroundColor: Colors.grey[200],
             ),
           ),
           Text(
@@ -110,13 +112,13 @@ class AddLocButton extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Ionicons.add,
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.blue,
             ),
             style: IconButton.styleFrom(
               minimumSize: const Size(60, 60),
-              backgroundColor: const Color(0xffebebeb),
+              backgroundColor: Colors.grey[200],
             ),
           ),
           const Text(

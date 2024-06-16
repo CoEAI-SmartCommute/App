@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class UserData extends StatelessWidget {
   const UserData({super.key});
@@ -10,20 +11,24 @@ class UserData extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     return Column(
       children: [
-        ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: user!.photoURL!,
-            fit: BoxFit.cover,
-            height: 100,
-            width: 100,
-            placeholder: (context, url) => const CircularProgressIndicator(),
+        Hero(
+          tag: 'profileImage',
+          child: ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: user?.photoURL ??
+                  const Icon(Ionicons.person_circle).toString(),
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+            ),
           ),
         ),
         const SizedBox(
           height: 16,
         ),
         Text(
-          user.displayName!,
+          user?.displayName ?? 'User',
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -33,20 +38,22 @@ class UserData extends StatelessWidget {
           height: 8,
         ),
         Text(
-          user.email!,
+          user?.email ?? 'user@xyyz.com',
           style: const TextStyle(
             fontSize: 15,
-            color: Color(0xff868782),
+            decoration: TextDecoration.underline,
+            decorationColor: Colors.grey,
+            color: Colors.grey,
           ),
         ),
         const SizedBox(
           height: 8,
         ),
         Text(
-          user.phoneNumber!.isEmpty ? '+91 xxxxx xxxxx' : user.phoneNumber!,
+          user?.phoneNumber ?? '+91 1234567890',
           style: const TextStyle(
             fontSize: 15,
-            color: Color(0xff868782),
+            color: Colors.grey,
           ),
         ),
       ],

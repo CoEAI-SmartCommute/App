@@ -49,6 +49,8 @@ dependencies:
   cached_network_image: ^3.3.1
   ionicons: ^0.2.2
   animations: ^2.0.11
+  weather: ^3.1.1
+  geolocator: ^12.0.0
 
 dev_dependencies:
   flutter_test:
