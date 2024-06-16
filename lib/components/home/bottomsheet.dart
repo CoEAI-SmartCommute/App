@@ -5,6 +5,7 @@ import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/screens/profile.dart';
 import 'package:smart_commute/components/home/forumupdates.dart';
+import 'package:smart_commute/screens/report.dart';
 
 class HomeBottomSheet extends StatefulWidget {
   const HomeBottomSheet({super.key});
@@ -35,6 +36,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 ),
               ]),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 17),
@@ -86,10 +88,10 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                 const Duration(milliseconds: 500),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    ProfileScreen(),
+                                    const ProfileScreen(),
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
-                              var begin = Offset(0.0, 1.0);
+                              var begin = const Offset(0.0, 1.0);
                               var end = Offset.zero;
                               var curve = Curves.ease;
 
@@ -130,13 +132,110 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const RecentUpdates()
+                  const RecentUpdates(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const ShareLocationButton(),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const ReportButton(),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class ShareLocationButton extends StatefulWidget {
+  const ShareLocationButton({super.key});
+
+  @override
+  State<ShareLocationButton> createState() => _ShareLocationButtonState();
+}
+
+class _ShareLocationButtonState extends State<ShareLocationButton> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 48,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: const MaterialStatePropertyAll(
+            Color(0xffEBEBEB),
+          ),
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          elevation: const MaterialStatePropertyAll(0),
+        ),
+        onPressed: () {},
+        child: const Text('Share My Location'),
+      ),
+    );
+  }
+}
+
+class ReportButton extends StatefulWidget {
+  const ReportButton({super.key});
+
+  @override
+  State<ReportButton> createState() => _ReportButtonState();
+}
+
+class _ReportButtonState extends State<ReportButton> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 48,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: const MaterialStatePropertyAll(
+            Color(0xffEBEBEB),
+          ),
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          elevation: const MaterialStatePropertyAll(0),
+        ),
+        onPressed: () => Navigator.of(context).push(
+          // MaterialPageRoute(
+          //     builder: (context) => const ProfileScreen()),
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const ReportScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var begin = const Offset(0.0, 1.0);
+              var end = Offset.zero;
+              var curve = Curves.ease;
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          ),
+        ),
+        child: const Text('Report an issue'),
+      ),
     );
   }
 }
