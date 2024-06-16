@@ -37,7 +37,8 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                 ),
               ]),
           child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 17),
@@ -75,8 +76,8 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                             ),
                             hintText: 'Hi ! Where do you want to go?',
                             hintStyle: const TextStyle(
-                              color: Colors.grey,
-                            ),
+                                color: Colors.grey,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -174,8 +175,8 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
       height: 48,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(
-            Color(0xffEBEBEB),
+          backgroundColor: MaterialStatePropertyAll(
+            Colors.grey[200],
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -185,7 +186,10 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
           elevation: const MaterialStatePropertyAll(0),
         ),
         onPressed: () {},
-        child: const Text('Share My Location'),
+        child: const Text(
+          'Share My Location',
+          style: TextStyle(color: Colors.blue),
+        ),
       ),
     );
   }
@@ -206,8 +210,8 @@ class _ReportButtonState extends State<ReportButton> {
       height: 48,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: const MaterialStatePropertyAll(
-            Color(0xffEBEBEB),
+          backgroundColor: MaterialStatePropertyAll(
+            Colors.grey[200],
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -217,8 +221,6 @@ class _ReportButtonState extends State<ReportButton> {
           elevation: const MaterialStatePropertyAll(0),
         ),
         onPressed: () => Navigator.of(context).push(
-          // MaterialPageRoute(
-          //     builder: (context) => const ProfileScreen()),
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
             pageBuilder: (context, animation, secondaryAnimation) =>
@@ -239,7 +241,10 @@ class _ReportButtonState extends State<ReportButton> {
             },
           ),
         ),
-        child: const Text('Report an issue'),
+        child: const Text(
+          'Report an issue',
+          style: TextStyle(color: Colors.blue),
+        ),
       ),
     );
   }

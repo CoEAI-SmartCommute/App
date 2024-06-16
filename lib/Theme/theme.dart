@@ -7,7 +7,7 @@ ThemeData appTheme = ThemeData(
   ),
   colorScheme: const ColorScheme.light(
       background: Colors.white,
-      primary: Color(0xff0C79FE),
+      primary: Colors.blue,
       secondary: Color(0xff868782),
       tertiary: Color(0xffEBEBEB)),
 );

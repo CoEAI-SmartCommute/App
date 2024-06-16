@@ -20,8 +20,8 @@ class _FloatingButtonState extends State<FloatingButton> {
           color: Colors.blue,
         ),
         style: IconButton.styleFrom(
-          minimumSize: const Size(40, 40),
-          backgroundColor: Colors.grey[200],
+          minimumSize: const Size(50, 50),
+          backgroundColor: Colors.white,
         ),
       ),
     );

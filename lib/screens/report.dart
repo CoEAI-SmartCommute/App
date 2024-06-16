@@ -21,6 +21,7 @@ class _ReportScreenState extends State<ReportScreen> {
     return Scaffold(
       backgroundColor: const Color(0xffF7F7F6),
       appBar: AppBar(
+        backgroundColor: const Color(0xffF7F7F6),
         title: const Text(
           'Report',
           style: TextStyle(
@@ -80,7 +81,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Drop images here to upload…'),
+                          const Text('Select images to upload…'),
                           MaterialButton(
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -240,9 +241,9 @@ class _ReportScreenState extends State<ReportScreen> {
       havePermission = status.isGranted;
     }
 
-    if (!havePermission) {
-      await openAppSettings();
-    }
+    // if (!havePermission) {
+    //   await openAppSettings();
+    // }
 
     return havePermission;
   }

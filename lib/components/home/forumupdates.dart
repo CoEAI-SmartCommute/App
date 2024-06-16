@@ -19,19 +19,17 @@ class RecentUpdatesState extends State<RecentUpdates> {
     },
     {
       'name': 'Sumit Darshanala',
-      'comment':
-          'Street not well lit.',
+      'comment': 'Street not well lit.',
       'location': 'San Francisco',
     },
     {
       'name': 'Deepanshu Garg',
-      'comment':
-          'I want my Oracle PPO. I am not interested in any other company.',
+      'comment': 'There is no food stall nearby. Even momos are not available.',
       'location': 'Bangalore',
     },
     {
       'name': 'Piyush Soni',
-      'comment': 'Nothing',
+      'comment': 'Elon be like, "I am going to Mars."',
       'location': 'SpaceX',
     },
   ];
@@ -73,7 +71,7 @@ class RecentUpdatesState extends State<RecentUpdates> {
         const SizedBox(height: 8),
         ...List.generate(commentsToShow, (index) {
           Map<String, String> comment = placeholderComments[index];
-    
+
           Widget commentWidget = Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,7 +113,7 @@ class RecentUpdatesState extends State<RecentUpdates> {
               ),
             ],
           );
-    
+
           // Add divider after each comment except the last one
           if (index < commentsToShow - 1) {
             commentWidget = Column(
@@ -127,7 +125,7 @@ class RecentUpdatesState extends State<RecentUpdates> {
               ],
             );
           }
-    
+
           return commentWidget;
         }),
       ],
