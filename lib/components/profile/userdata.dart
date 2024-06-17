@@ -50,7 +50,7 @@ class UserData extends StatelessWidget {
           height: 8,
         ),
         Text(
-          user?.phoneNumber ?? '+91 1234567890',
+          user?.phoneNumber ?? '+91 xxxxx xxxxx',
           style: const TextStyle(
             fontSize: 15,
             color: Colors.grey,

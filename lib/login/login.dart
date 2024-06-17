@@ -3,6 +3,7 @@ import 'package:smart_commute/login/googlesignin.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_commute/screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -54,6 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
             SignInButton(
               buttonType: ButtonType.google,
               buttonSize: ButtonSize.large,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              btnText: 'Continue with Google',
+              btnTextColor: Colors.grey,
               onPressed: () async {
                 showDialog(
                     context: context,
@@ -67,6 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 await provider.googleLogin();
                 if (!mounted) return;
                 Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
               },
             ),
           ],

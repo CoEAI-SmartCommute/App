@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_commute/login/googlesignin.dart';
+import 'package:smart_commute/login/login.dart';
 
 class ProfileLogout extends StatefulWidget {
   const ProfileLogout({super.key});
@@ -39,6 +40,12 @@ class _ProfileLogoutState extends State<ProfileLogout> {
           await provider.logout();
           if (!context.mounted) return;
           Navigator.pop(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LoginScreen(),
+            ),
+          );
         },
         icon: const Icon(
           Ionicons.log_out,
