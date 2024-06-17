@@ -26,7 +26,7 @@ Saarthi is an intelligent navigation app developed under the government's SAMUDR
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/safenav.git
+    git clone https://github.com/CoEAI-SmartCommute/App.git
     cd App
     ```
 
