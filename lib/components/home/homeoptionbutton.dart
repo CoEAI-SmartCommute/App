@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class HomeOptionButton extends StatelessWidget {
+class HomeOptionButton extends StatefulWidget {
   const HomeOptionButton({super.key});
 
   @override
+  State<HomeOptionButton> createState() => _HomeOptionButtonState();
+}
+
+class _HomeOptionButtonState extends State<HomeOptionButton> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0.15,
+        horizontal: 24,
+      ),
       child: Container(
         height: MediaQuery.of(context).size.height * 0.13,
         width: MediaQuery.of(context).size.width * 0.12,
@@ -48,11 +56,12 @@ class HomeOptionButton extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Ionicons.navigate_outline,
-                            color: Colors.blue,
-                          )),
+                        onPressed: () {},
+                        icon: const Icon(
+                          FontAwesomeIcons.locationCrosshairs,
+                          color: Colors.blue,
+                        ),
+                      ),
                     ),
                   ),
                 ],

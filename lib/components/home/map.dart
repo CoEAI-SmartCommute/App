@@ -95,8 +95,9 @@ class _HomeMapState extends State<HomeMap> {
       currentLatLng = const LatLng(0, 0);
     }
 
-    MarkerLayer markerLayer() => MarkerLayer(markers: [
-          Marker(
+    MarkerLayer markerLayer() => MarkerLayer(
+          markers: [
+            Marker(
               point: LatLng(currentLatLng.latitude, currentLatLng.longitude),
               width: 50,
               height: 50,
@@ -105,8 +106,10 @@ class _HomeMapState extends State<HomeMap> {
                 Icons.circle,
                 size: MediaQuery.of(context).size.width * 0.04,
                 color: appTheme.colorScheme.primary,
-              ))
-        ]);
+              ),
+            )
+          ],
+        );
 
     return FlutterMap(
         mapController: _mapController,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FloatingButton extends StatefulWidget {
   const FloatingButton({super.key});
@@ -12,16 +12,27 @@ class _FloatingButtonState extends State<FloatingButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0.15,
+        horizontal: 20,
+      ),
       child: IconButton(
         onPressed: () {},
         icon: const Icon(
-          Ionicons.chatbox,
-          color: Colors.blue,
+          FontAwesomeIcons.exclamation,
+          color: Colors.white,
+          size: 30,
         ),
         style: IconButton.styleFrom(
-          minimumSize: const Size(50, 50),
-          backgroundColor: Colors.white,
+          minimumSize: const Size(40, 40),
+          backgroundColor: Colors.red,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+            side: const BorderSide(
+              color: Colors.white,
+              width: 2,
+            ),
+          ),
         ),
       ),
     );

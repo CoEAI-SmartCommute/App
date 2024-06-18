@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/components/suggestions.dart';
-import 'package:smart_commute/screens/profile.dart';
 import 'package:smart_commute/components/home/forumupdates.dart';
 import 'package:smart_commute/screens/report.dart';
 
@@ -18,8 +16,7 @@ class HomeBottomSheet extends StatefulWidget {
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    double sheetPosition = MediaQuery.of(context).size.height * 0.00015;
-    final user = FirebaseAuth.instance.currentUser;
+    double sheetPosition = MediaQuery.of(context).size.height * 0.00018;
 
     return DraggableScrollableSheet(
       initialChildSize: sheetPosition,
@@ -38,7 +35,8 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
               ]),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+              parent: ClampingScrollPhysics(),
+            ),
             controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 17),
@@ -52,12 +50,12 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       color: Colors.grey[200],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.70,
+                        width: MediaQuery.of(context).size.width * 0.74,
                         height: 36,
                         child: TextField(
                           textAlignVertical: TextAlignVertical.center,
@@ -74,53 +72,19 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                 style: BorderStyle.none,
                               ),
                             ),
-                            hintText: 'Hi ! Where do you want to go?',
+                            hintText: 'Hi ! Where do you want to go ?',
                             hintStyle: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          // MaterialPageRoute(
-                          //     builder: (context) => const ProfileScreen()),
-                          PageRouteBuilder(
-                            transitionDuration:
-                                const Duration(milliseconds: 500),
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const ProfileScreen(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              var begin = const Offset(0.0, 1.0);
-                              var end = Offset.zero;
-                              var curve = Curves.ease;
-
-                              var tween = Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: curve));
-
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
-                          ),
-                        ),
-                        child: Hero(
-                          tag: 'profileImage',
-                          child: ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl: user!.photoURL!,
-                              fit: BoxFit.cover,
-                              height: 42,
-                              width: 42,
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                            ),
-                          ),
-                        ),
-                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Ionicons.mic,
+                            size: 30,
+                          )),
                     ],
                   ),
                   const SizedBox(
