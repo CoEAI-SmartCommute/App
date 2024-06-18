@@ -16,22 +16,29 @@ class _FloatingButtonState extends State<FloatingButton> {
         vertical: MediaQuery.of(context).size.height * 0.15,
         horizontal: 20,
       ),
-      child: IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          FontAwesomeIcons.exclamation,
+      child: Container(
+        decoration: BoxDecoration(
           color: Colors.white,
-          size: 30,
-        ),
-        style: IconButton.styleFrom(
-          minimumSize: const Size(40, 40),
-          backgroundColor: Colors.red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-            side: const BorderSide(
-              color: Colors.white,
-              width: 2,
+          borderRadius: BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 1.5,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
+          ],
+        ),
+        child: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            FontAwesomeIcons.exclamation,
+            color: Colors.white,
+            size: 30,
+          ),
+          style: IconButton.styleFrom(
+            minimumSize: const Size(35, 35),
+            backgroundColor: Colors.red,
           ),
         ),
       ),
