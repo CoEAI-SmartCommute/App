@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smart_commute/components/home/bottomsheet.dart';
-import 'package:smart_commute/components/home/floatingbutton.dart';
+import 'package:smart_commute/components/home/sosbutton.dart';
 import 'package:smart_commute/components/home/homeoptionbutton.dart';
 import 'package:smart_commute/components/home/map.dart';
 import 'package:smart_commute/screens/profile.dart';
@@ -41,7 +41,7 @@ class HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: EdgeInsets.only(bottom: 16.0),
-                child: FloatingButton(),
+                child: SOSButton(),
               )),
           Align(
               alignment: Alignment.bottomRight,

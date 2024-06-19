@@ -21,7 +21,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
     return DraggableScrollableSheet(
       initialChildSize: sheetPosition,
       minChildSize: sheetPosition,
-      maxChildSize: MediaQuery.of(context).size.height * 0.001,
+      maxChildSize: MediaQuery.of(context).size.height * 0.0011,
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(

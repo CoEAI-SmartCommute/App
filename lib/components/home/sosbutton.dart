@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:smart_commute/var.dart';
+import 'package:smart_commute/screens/sos.dart';
 
-class FloatingButton extends StatefulWidget {
-  const FloatingButton({super.key});
+class SOSButton extends StatefulWidget {
+  const SOSButton({super.key});
 
   @override
-  State<FloatingButton> createState() => _FloatingButtonState();
+  State<SOSButton> createState() => _SOSButtonState();
 }
 
-class _FloatingButtonState extends State<FloatingButton> {
+class _SOSButtonState extends State<SOSButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -19,9 +18,11 @@ class _FloatingButtonState extends State<FloatingButton> {
         horizontal: 20,
       ),
       child: TextButton.icon(
-        onPressed: () {
-          _callNumber();
-        },
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const SosScreen(),
+          ),
+        ),
         style: IconButton.styleFrom(
           elevation: 15,
           shadowColor: Colors.grey,
@@ -49,8 +50,4 @@ class _FloatingButtonState extends State<FloatingButton> {
       ),
     );
   }
-}
-
-_callNumber() async {
-  await FlutterPhoneDirectCaller.callNumber(emergencyNumber);
 }
