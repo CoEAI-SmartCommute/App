@@ -47,7 +47,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                     height: 5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: Colors.grey[200],
+                      color: Colors.grey[300],
                     ),
                   ),
                   const SizedBox(height: 10),

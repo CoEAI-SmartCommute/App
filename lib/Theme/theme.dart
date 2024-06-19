@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 ThemeData appTheme = ThemeData(
   brightness: Brightness.light,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.white,
+  ),
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Colors.white,
   ),

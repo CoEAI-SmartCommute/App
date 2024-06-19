@@ -22,12 +22,12 @@ class _HomeOptionButtonState extends State<HomeOptionButton> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey,
               spreadRadius: 1.5,
               blurRadius: 5,
-              offset: const Offset(0, 3),
+              offset: Offset(0, 3),
             ),
           ],
         ),
