@@ -37,8 +37,18 @@ class HomeScreenState extends State<HomeScreen> {
       body: const Stack(
         children: [
           HomeMap(),
-          Align(alignment: Alignment.bottomLeft, child: FloatingButton()),
-          Align(alignment: Alignment.bottomRight, child: HomeOptionButton()),
+          Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: FloatingButton(),
+              )),
+          Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: HomeOptionButton(),
+              )),
           HomeBottomSheet()
         ],
       ),

@@ -72,7 +72,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                                 style: BorderStyle.none,
                               ),
                             ),
-                            hintText: 'Hi ! Where do you want to go ?',
+                            hintText: 'Hi! Where do you want to go?',
                             hintStyle: const TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.normal),
