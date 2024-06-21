@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:smart_commute/services/camera.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -16,6 +20,9 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   File? _selectedImage;
+  TextEditingController _descriptionController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,113 +38,145 @@ class _ReportScreenState extends State<ReportScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Location',
-              style: TextStyle(fontSize: 15, color: Colors.grey),
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0xffEEEEEE),
-                border: InputBorder.none,
-                hintText: 'Choose Destination',
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            const Text(
-              'Describe the unsafe situation',
-              style: TextStyle(fontSize: 15, color: Colors.grey),
-            ),
-            const TextField(
-              minLines: 8,
-              maxLines: 10,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(0xffEEEEEE),
-                border: InputBorder.none,
-                hintText: 'Type your inputs...',
-              ),
-            ),
-            const SizedBox(
-              height: 11,
-            ),
-            DottedBorder(
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(8),
-              color: const Color(0xffE8E8E8),
-              strokeWidth: 2,
-              child: (_selectedImage == null)
-                  ? Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 140,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffF3F3F3),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Select images to upload…'),
-                          MaterialButton(
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                50,
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Location',
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+                const TextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xffEEEEEE),
+                    border: InputBorder.none,
+                    hintText: 'Choose Destination',
+                  ),
+                  // validator: (value) {
+                  //   if (value == null || value.trim().isEmpty) {
+                  //     return 'Please enter a valid name';
+                  //   }
+                  //   return null;
+                  // },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                  'Describe the unsafe situation',
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+                TextFormField(
+                  controller: _descriptionController,
+                  minLines: 8,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xffEEEEEE),
+                    border: InputBorder.none,
+                    hintText: 'Type your inputs...',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter a valid description';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 11,
+                ),
+                DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(8),
+                  color: const Color(0xffE8E8E8),
+                  strokeWidth: 2,
+                  child: (_selectedImage == null)
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 140,
+                          decoration: BoxDecoration(
+                              color: const Color(0xffF3F3F3),
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Select images to upload…'),
+                              MaterialButton(
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    50,
+                                  ),
+                                ),
+                                color: const Color(0xffe8e8e8),
+                                onPressed: () {
+                                  imgInput();
+                                },
+                                child: const Text('Browse Images'),
+                              )
+                            ],
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: () {
+                            imgInput();
+                          },
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                                File(
+                                  _selectedImage!.path,
+                                ),
                               ),
-                            ),
-                            color: const Color(0xffe8e8e8),
-                            onPressed: () {
-                              imgInput();
-                            },
-                            child: const Text('Browse Images'),
-                          )
-                        ],
-                      ),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        imgInput();
-                      },
-                      child: Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            height: 200,
-                            width: MediaQuery.of(context).size.width,
-                            fit: BoxFit.cover,
-                            File(
-                              _selectedImage!.path,
                             ),
                           ),
                         ),
-                      ),
-                    ),
-            ),
-            const Expanded(child: SizedBox()),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 48,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: const MaterialStatePropertyAll(
-                    Color(0xffEBEBEB),
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  elevation: const MaterialStatePropertyAll(0),
                 ),
-                onPressed: () {},
-                child: const Text('Upload Report'),
-              ),
+                const SizedBox(
+                  height: 60,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: const MaterialStatePropertyAll(
+                        Color(0xffEBEBEB),
+                      ),
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      elevation: const MaterialStatePropertyAll(0),
+                    ),
+                    onPressed: () {
+                      formKey.currentState!.validate();
+                      if (_selectedImage == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select an image.'),
+                          ),
+                        );
+                        return;
+                      }
+                      submitForm();
+                    },
+                    child: const Text('Upload Report'),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -263,5 +302,80 @@ class _ReportScreenState extends State<ReportScreen> {
         ),
       ),
     );
+  }
+
+  Future uploadDetails({
+    required GeoPoint location,
+    required String description,
+    required String imgurl,
+    required String username,
+    required String id,
+  }) async {
+    final reportDetails =
+        FirebaseFirestore.instance.collection('Reports').doc(id);
+    final json = {
+      'Location': location,
+      'Description': description,
+      'Username': username,
+      'Image': imgurl,
+    };
+    await reportDetails.set(json);
+  }
+
+  void submitForm() async {
+    var validation = formKey.currentState!.validate();
+    if (!validation) return;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+            child: CircularProgressIndicator(
+          color: Colors.white,
+        ));
+      },
+    );
+    formKey.currentState!.save();
+    const idGen = Uuid();
+    String id = idGen.v1();
+    try {
+      final storageRef =
+          FirebaseStorage.instance.ref().child('Reports').child(id);
+      await storageRef.putFile(_selectedImage!);
+      final imgURL = await storageRef.getDownloadURL();
+      await uploadDetails(
+          location: const GeoPoint(0, 0),
+          username: user?.displayName ?? 'NA',
+          description: _descriptionController.text,
+          imgurl: imgURL,
+          id: id);
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.brown,
+          content: Text(
+            "Reported successfully",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+      formKey.currentState!.reset();
+      _selectedImage = null;
+      setState(() {});
+    } catch (e) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString(),
+          ),
+        ),
+      );
+    }
   }
 }

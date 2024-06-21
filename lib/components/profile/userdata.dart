@@ -41,7 +41,6 @@ class UserData extends StatelessWidget {
           user?.email ?? 'user@xyyz.com',
           style: const TextStyle(
             fontSize: 15,
-            decoration: TextDecoration.underline,
             decorationColor: Colors.grey,
             color: Colors.grey,
           ),

@@ -60,6 +60,9 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_phone_direct_caller: ^2.1.1
   circular_countdown_timer: ^0.2.3
+  firebase_storage: ^11.7.7
+  uuid: ^4.4.0
+  contacts_service: ^0.6.3
 
 dev_dependencies:
   flutter_test:

@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             UserData(),
             SizedBox(
-              height: 22,
+              height: 10,
             ),
             ProfileFriends(),
             Expanded(child: SizedBox()),
