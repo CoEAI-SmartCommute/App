@@ -66,6 +66,7 @@ dependencies:
   simple_ripple_animation: ^0.0.9
   background_app_bar: ^2.1.0
   background_sms: ^0.0.4
+  shared_preferences: ^2.2.3
 
 
 dev_dependencies:
