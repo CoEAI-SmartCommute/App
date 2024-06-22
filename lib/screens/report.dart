@@ -7,6 +7,8 @@ import 'package:images_picker/images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/services/camera.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
@@ -20,11 +22,13 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   File? _selectedImage;
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  // TextEditingController _locationController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    // _locationController.text = "Deepanshu";
     return Scaffold(
       backgroundColor: const Color(0xffF7F7F6),
       appBar: AppBar(
@@ -49,8 +53,10 @@ class _ReportScreenState extends State<ReportScreen> {
                   'Location',
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
-                const TextField(
-                  decoration: InputDecoration(
+                 TextFormField(
+                  initialValue: context.watch<LocationProvider>().currentLocation.toString(),
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
                     filled: true,
                     fillColor: Color(0xffEEEEEE),
                     border: InputBorder.none,
@@ -343,7 +349,7 @@ class _ReportScreenState extends State<ReportScreen> {
       await storageRef.putFile(_selectedImage!);
       final imgURL = await storageRef.getDownloadURL();
       await uploadDetails(
-          location: const GeoPoint(0, 0),
+          location:  GeoPoint(context.read<LocationProvider>().currentLocation!.latitude!, context.read<LocationProvider>().currentLocation!.longitude!),
           username: user?.displayName ?? 'NA',
           description: _descriptionController.text,
           imgurl: imgURL,
