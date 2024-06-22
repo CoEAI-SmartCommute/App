@@ -60,7 +60,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     filled: true,
                     fillColor: Color(0xffEEEEEE),
                     border: InputBorder.none,
-                    hintText: 'Choose Destination',
+                    hintText: 'Choose Location',
                   ),
                   // validator: (value) {
                   //   if (value == null || value.trim().isEmpty) {

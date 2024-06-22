@@ -10,6 +10,7 @@ import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
 import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
+import 'package:smart_commute/screens/permission.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
-            return const HomeScreen();
+            return const PermissionScreen();
           } else if (snapshot.hasError) {
             return const Center(child: Text('Something has went wrong.'));
           } else {
