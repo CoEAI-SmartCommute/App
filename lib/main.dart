@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/login/register.dart';
 import 'package:smart_commute/Theme/theme.dart';
@@ -12,6 +13,7 @@ import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/screens/permission.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,13 +33,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (context) => GoogleSignInProvider(),
-              builder: (context, child) => MaterialApp(
-                    theme: appTheme,
-                    debugShowCheckedModeBanner: false,
-                    home: const MyHomePage(),
-                  ))
+            create: (context) => GoogleSignInProvider(),
+            // builder: (context, child) => MaterialApp(
+            //   theme: appTheme,
+            //   debugShowCheckedModeBanner: false,
+            //   home: const MyHomePage(),
+            // ),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => LocationProvider(),
+          ),
         ],
+        child: MaterialApp(
+          theme: appTheme,
+          debugShowCheckedModeBanner: false,
+          home: const MyHomePage(),
+        ),
       );
 }
 
