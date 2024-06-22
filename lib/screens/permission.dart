@@ -75,7 +75,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   Widget build(BuildContext context) {
     final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
       backgroundColor: Colors.red,
-      minimumSize: const Size(250, 50), // Fixed button size
+      minimumSize: const Size(250, 50),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

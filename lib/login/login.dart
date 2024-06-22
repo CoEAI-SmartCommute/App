@@ -3,11 +3,11 @@ import 'package:smart_commute/login/googlesignin.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/login/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/screens/permission.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => const PermissionScreen(),
         ),
       );
     } else {

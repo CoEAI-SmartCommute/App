@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/login/login.dart';
-import 'package:smart_commute/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/screens/permission.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key});
+  const RegisterScreen({super.key});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       try {
         await FirebaseFirestore.instance.collection('users').doc(uid).set(data);
 
-        await _saveUserDataLocally(data); // Save locally
+        await _saveUserDataLocally(data);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration successful!')),
@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const PermissionScreen()),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

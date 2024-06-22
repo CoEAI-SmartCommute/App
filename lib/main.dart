@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_commute/providers/location_provider.dart';
-import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/login/register.dart';
 import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key});
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -98,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (docSnapshot.exists) {
       final userData = docSnapshot.data() as Map<String, dynamic>;
       await _saveUserDataLocally(userData);
-      return const HomeScreen();
+      return const PermissionScreen();
     } else {
       return const RegisterScreen();
     }

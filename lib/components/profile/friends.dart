@@ -48,7 +48,7 @@ class _ProfileFriendsState extends State<ProfileFriends> {
             child: Column(
               children: [
                 SizedBox(
-                    height: MediaQuery.of(context).size.height*0.2,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     child: ContactsList(userId: user!.displayName!)),
                 Divider(
                   color: Colors.grey[300],
@@ -171,7 +171,6 @@ class ContactsList extends StatelessWidget {
             final name = contactData['name'] ?? 'No Name';
             final number = contactData['number'] ?? 'No Number';
             final imageUrl = contactData['image_url'];
-            print(name + number.toString());
             return ContactCard(
               imgUrl: imageUrl,
               name: name,
