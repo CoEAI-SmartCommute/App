@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:smart_commute/theme/theme.dart';
+import 'package:permission_handler/permission_handler.dart' as back_sms;
+import 'package:smart_commute/Theme/theme.dart';
 
 class HomeMap extends StatefulWidget {
   const HomeMap({super.key});
@@ -23,8 +24,17 @@ class _HomeMapState extends State<HomeMap> {
   @override
   void initState() {
     initLocationService();
+    initSmsService();
     _mapController = MapController();
     super.initState();
+  }
+
+  void initSmsService() async {
+    var status = await back_sms.Permission.sms.status;
+
+    if (status.isDenied) {
+      await back_sms.Permission.sms.request();
+    }
   }
 
   void initLocationService() async {

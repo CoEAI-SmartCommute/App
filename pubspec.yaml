@@ -63,6 +63,10 @@ dependencies:
   firebase_storage: ^11.7.7
   uuid: ^4.4.0
   contacts_service: ^0.6.3
+  simple_ripple_animation: ^0.0.9
+  background_app_bar: ^2.1.0
+  background_sms: ^0.0.4
+
 
 dev_dependencies:
   flutter_test:

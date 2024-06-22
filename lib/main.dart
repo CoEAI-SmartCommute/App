@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_commute/screens/home.dart';
-import 'package:smart_commute/theme/theme.dart';
+import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
 import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';

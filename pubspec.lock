@@ -25,6 +25,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  background_app_bar:
+    dependency: "direct main"
+    description:
+      name: background_app_bar
+      sha256: c1a7aa9c811f12cce585b701226630796bcd00205ed42c737bd2bcbaaba93fcd
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  background_sms:
+    dependency: "direct main"
+    description:
+      name: background_sms
+      sha256: "680edd2b7c4e487c2799e337d40ed166158ba15369eb0578ac804c3aa1845226"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -552,6 +568,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  hyper_lint:
+    dependency: transitive
+    description:
+      name: hyper_lint
+      sha256: "6d214b6e6e38d15f087ed9b67d461d026c9cdebb64c7a46cf1fb80350e536d33"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   image_picker:
     dependency: "direct main"
     description:
@@ -968,6 +992,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.6"
+  simple_ripple_animation:
+    dependency: "direct main"
+    description:
+      name: simple_ripple_animation
+      sha256: d654c4a4a4a61ec8cf52b7b06dcf1bcb311c98e0a1a98534c6355aca2a73b6fd
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.9"
   sky_engine:
     dependency: transitive
     description: flutter
