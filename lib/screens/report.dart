@@ -20,7 +20,7 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   File? _selectedImage;
-  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser;
   @override
@@ -71,7 +71,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
                 TextFormField(
-                  controller: _descriptionController,
+                  controller: descriptionController,
                   minLines: 8,
                   maxLines: 10,
                   decoration: const InputDecoration(
@@ -345,7 +345,7 @@ class _ReportScreenState extends State<ReportScreen> {
       await uploadDetails(
           location: const GeoPoint(0, 0),
           username: user?.displayName ?? 'NA',
-          description: _descriptionController.text,
+          description: descriptionController.text,
           imgurl: imgURL,
           id: id);
       if (!mounted) return;

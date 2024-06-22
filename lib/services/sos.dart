@@ -3,8 +3,8 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:smart_commute/var.dart';
 
 Future sosFunction() async {
-  // _callNumber();
-  _sentSms();
+  await _sentSms();
+  _callNumber();
 }
 
 _sentSms() async {
@@ -22,9 +22,9 @@ _sentSms() async {
         message:
             "Alert from Saarthi, Username send Emergency request. Here is there current Location https://www.google.com/maps/place/$longitude,$latitude");
     if (result == SmsStatus.sent) {
-      print("Sent");
+      // print("Sent");
     } else {
-      print("Failed");
+      // print("Failed");
     }
   }
 }
