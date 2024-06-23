@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeOptionButton extends StatefulWidget {
-  const HomeOptionButton({super.key});
+  final VoidCallback onPressed;
+
+  const HomeOptionButton({super.key, required this.onPressed});
 
   @override
   State<HomeOptionButton> createState() => _HomeOptionButtonState();
@@ -56,7 +58,7 @@ class _HomeOptionButtonState extends State<HomeOptionButton> {
                   Expanded(
                     child: Center(
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: widget.onPressed,
                         icon: const Icon(
                           FontAwesomeIcons.locationCrosshairs,
                           color: Colors.blue,

@@ -23,7 +23,6 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   File? _selectedImage;
   final TextEditingController _descriptionController = TextEditingController();
-  // TextEditingController _locationController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser;
   @override

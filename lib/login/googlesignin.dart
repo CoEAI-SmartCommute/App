@@ -25,7 +25,6 @@ class GoogleSignInProvider extends ChangeNotifier {
     );
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
-      await saveUser(googleUser);
     } catch (e) {
       null;
     }
@@ -33,16 +32,6 @@ class GoogleSignInProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> saveUser(GoogleSignInAccount googleUser) async {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(googleUser.displayName)
-        .set({
-      "email": googleUser.email,
-      "name": googleUser.displayName,
-      "profilepic": googleUser.photoUrl,
-    });
-  }
 
   Future logout() async {
     await googleSignIn.disconnect();

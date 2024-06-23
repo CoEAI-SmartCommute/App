@@ -12,7 +12,9 @@ import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/permission.dart';
+import 'package:smart_commute/services/permissioncheck.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (docSnapshot.exists) {
       final userData = docSnapshot.data() as Map<String, dynamic>;
       await _saveUserDataLocally(userData);
-      return const PermissionScreen();
+      bool isGranted = await checkPermissions();
+      return isGranted ? const HomeScreen() : const PermissionScreen();
     } else {
       return const RegisterScreen();
     }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
 class LocationProvider extends ChangeNotifier {
-  LocationData? currentLocation;
+  GeoPoint? currentLocation;
 
   // LocationProvider({this.currentLocation=null});
-  void updateCurrentLocation({required LocationData location}) async {
+  void updateCurrentLocation({required GeoPoint location}) async {
     currentLocation = location;
     notifyListeners();
   }

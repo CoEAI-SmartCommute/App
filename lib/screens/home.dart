@@ -43,12 +43,6 @@ class HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(bottom: 16.0),
                 child: SOSButton(),
               )),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
-                child: HomeOptionButton(),
-              )),
           HomeBottomSheet()
         ],
       ),

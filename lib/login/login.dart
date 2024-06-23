@@ -7,7 +7,9 @@ import 'package:smart_commute/login/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/permission.dart';
+import 'package:smart_commute/services/permissioncheck.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -105,12 +107,22 @@ class _LoginScreenState extends State<LoginScreen> {
     if (docSnapshot.exists) {
       final userData = docSnapshot.data() as Map<String, dynamic>;
       await _saveUserDataLocally(userData);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const PermissionScreen(),
-        ),
-      );
+      if (await checkPermissions()) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+      else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PermissionScreen(),
+          ),
+        );
+      }
     } else {
       Navigator.pushReplacement(
         context,

@@ -1,121 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_commute/Theme/theme.dart';
+import 'package:smart_commute/components/home/homeoptionbutton.dart';
 import 'package:smart_commute/providers/location_provider.dart';
 
 class HomeMap extends StatefulWidget {
   const HomeMap({super.key});
 
   @override
-  State<HomeMap> createState() => _HomeMapState();
+  HomeMapState createState() => HomeMapState();
 }
 
-class _HomeMapState extends State<HomeMap> {
-  late MapController _mapController;
-  // LocationData? _currentLocation;
-  final Location _locationService = Location();
-  final bool _liveUpdate = true;
+class HomeMapState extends State<HomeMap> {
+  late MapController mapController;
+  Location location = Location();
 
   @override
   void initState() {
-    initLocationService();
-    _mapController = MapController();
     super.initState();
+    mapController = MapController(
+      initMapWithUserPosition: const UserTrackingOption(enableTracking: true),
+    );
+    _checkPermissions();
   }
 
-  void initLocationService() async {
-    LocationData? location;
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _checkPermissions() async {
     bool serviceEnabled;
-    bool serviceRequestResult;
+    PermissionStatus permissionGranted;
 
-    try {
-      serviceEnabled = await _locationService.serviceEnabled();
-
-      if (serviceEnabled) {
-        location = await _locationService.getLocation();
-        if (!mounted) return;
-        context.read<LocationProvider>().updateCurrentLocation(
-              location: location,
-            );
-        _locationService.onLocationChanged.listen((LocationData result) async {
-          if (mounted) {
-            context.read<LocationProvider>().updateCurrentLocation(
-                  location: result,
-                );
-
-            if (_liveUpdate) {
-              _mapController.move(
-                LatLng(
-                  context.watch<LocationProvider>().currentLocation!.latitude!,
-                  context.watch<LocationProvider>().currentLocation!.longitude!,
-                ),
-                15,
-              );
-            }
-          }
-        });
-      } else {
-        serviceRequestResult = await _locationService.requestService();
-        if (serviceRequestResult) {
-          initLocationService();
-          return;
-        }
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
       }
-    } on PlatformException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
-      location = null;
     }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _updateUserLocation();
+  }
+
+  Future<void> _updateUserLocation() async {
+    var userLocation = await location.getLocation();
+    GeoPoint newLocation = GeoPoint(
+      latitude: userLocation.latitude!,
+      longitude: userLocation.longitude!,
+    );
+    mapController.changeLocation(newLocation);
+    if (!context.mounted) return;
+    context.read<LocationProvider>().updateCurrentLocation(
+          location: newLocation,
+        );
+  }
+
+  void reloadMap() async {
+    await _updateUserLocation();
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentLocationProvider = Provider.of<LocationProvider>(context);
-    LatLng currentLatLng;
-    if (currentLocationProvider.currentLocation != null) {
-      currentLatLng = LatLng(currentLocationProvider.currentLocation!.latitude!,
-          currentLocationProvider.currentLocation!.longitude!);
-    } else {
-      currentLatLng = const LatLng(0, 0);
-    }
-
-    MarkerLayer markerLayer() => MarkerLayer(
-          markers: [
-            Marker(
-              point: LatLng(currentLatLng.latitude, currentLatLng.longitude),
-              width: 50,
-              height: 50,
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.circle,
-                size: MediaQuery.of(context).size.width * 0.04,
-                color: appTheme.colorScheme.primary,
-              ),
-            )
-          ],
-        );
-
-    return FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          initialCenter:
-              LatLng(currentLatLng.latitude, currentLatLng.longitude),
-          initialZoom: 15,
-          interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.all,
-          ),
-        ),
+    return Scaffold(
+      body: Stack(
         children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+          OSMFlutter(
+            osmOption: OSMOption(
+                userLocationMarker: UserLocationMaker(
+                  personMarker: const MarkerIcon(
+                    icon: Icon(
+                      Icons.circle,
+                      color: Colors.blue,
+                      size: 48,
+                    ),
+                  ),
+                  directionArrowMarker: const MarkerIcon(
+                    icon: Icon(
+                      Icons.circle,
+                      color: Colors.blue,
+                      size: 48,
+                    ),
+                  ),
+                ),
+                zoomOption: const ZoomOption(
+                    initZoom: 25, // Set higher initial zoom level here
+                    minZoomLevel: 3,
+                    maxZoomLevel: 19,
+                    stepZoom: 1.0),
+                userTrackingOption:
+                    const UserTrackingOption(enableTracking: true)),
+            controller: mapController,
           ),
-          markerLayer()
-        ]);
+          Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: HomeOptionButton(
+                  onPressed: reloadMap,
+                ),
+              )),
+        ],
+      ),
+    );
   }
 }
