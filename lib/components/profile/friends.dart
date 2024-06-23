@@ -162,7 +162,8 @@ class ContactsList extends StatelessWidget {
         }
 
         final contacts = snapshot.data!.docs;
-
+        print("=============================================================================================================================================================================================================================================================================");
+        print(contacts.length);
         return ListView.builder(
           itemCount: contacts.length,
           itemBuilder: (context, index) {
