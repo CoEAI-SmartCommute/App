@@ -53,22 +53,35 @@ class _ReportScreenState extends State<ReportScreen> {
                   'Location',
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ),
-                 TextFormField(
-                  initialValue: context.watch<LocationProvider>().currentLocation.toString(),
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xffEEEEEE),
-                    border: InputBorder.none,
-                    hintText: 'Choose Location',
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffEEEEEE),
+                      borderRadius: BorderRadius.circular(8)),
+                      alignment: Alignment.center,
+                  child: Text(
+                    '${context.watch<LocationProvider>().currentLocation!.latitude} , ${context.watch<LocationProvider>().currentLocation!.longitude}',
                   ),
-                  // validator: (value) {
-                  //   if (value == null || value.trim().isEmpty) {
-                  //     return 'Please enter a valid name';
-                  //   }
-                  //   return null;
-                  // },
                 ),
+                //  TextFormField(
+                //   initialValue: ,
+                //   keyboardType: TextInputType.multiline,
+
+                //   decoration: const InputDecoration(
+                //     filled: true,
+                //     fillColor: Color(0xffEEEEEE),
+                //     border: InputBorder.none,
+                //     hintText: 'Choose Location',
+                //   ),
+                //   validator: (value) {
+                //     if (value == null || value.trim().isEmpty) {
+                //       return 'Please enter a valid name';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -349,7 +362,9 @@ class _ReportScreenState extends State<ReportScreen> {
       await storageRef.putFile(_selectedImage!);
       final imgURL = await storageRef.getDownloadURL();
       await uploadDetails(
-          location:  GeoPoint(context.read<LocationProvider>().currentLocation!.latitude!, context.read<LocationProvider>().currentLocation!.longitude!),
+          location: GeoPoint(
+              context.read<LocationProvider>().currentLocation!.latitude!,
+              context.read<LocationProvider>().currentLocation!.longitude!),
           username: user?.displayName ?? 'NA',
           description: _descriptionController.text,
           imgurl: imgURL,

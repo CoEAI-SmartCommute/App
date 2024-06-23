@@ -67,6 +67,7 @@ dependencies:
   background_app_bar: ^2.1.0
   background_sms: ^0.0.4
   shared_preferences: ^2.2.3
+  flutter_profile_picture: ^2.0.0
 
 
 dev_dependencies:

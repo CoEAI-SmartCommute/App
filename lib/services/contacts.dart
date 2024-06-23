@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<List<Map<String, dynamic>>> fetchContacts() async {
-  var currentUser = FirebaseAuth.instance.currentUser;
+  var user = FirebaseAuth.instance.currentUser;
   List<Map<String, dynamic>> contactsList = [];
 
-  if (currentUser != null) {
+  if (user != null) {
     var querySnapshot = await FirebaseFirestore.instance
         .collection('users')
-        .doc(currentUser.displayName)
+        .doc(user.uid)
         .collection('friend_contacts')
         .get();
 

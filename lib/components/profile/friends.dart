@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
-import 'package:smart_commute/var.dart';
 
 class ProfileFriends extends StatefulWidget {
   const ProfileFriends({super.key});
@@ -49,12 +48,12 @@ class _ProfileFriendsState extends State<ProfileFriends> {
               children: [
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.2,
-                    child: ContactsList(userId: user!.displayName!)),
+                    child: ContactsList(userId: user!.uid)),
                 Divider(
                   color: Colors.grey[300],
                 ),
                 AddFriendButton(
-                  username: user!.displayName!,
+                  userid: user!.uid,
                 )
               ],
             ),
@@ -68,12 +67,11 @@ class _ProfileFriendsState extends State<ProfileFriends> {
 class ContactCard extends StatefulWidget {
   final String name;
   final String number;
-  final dynamic imgUrl;
-  const ContactCard(
-      {super.key,
-      required this.name,
-      required this.number,
-      required this.imgUrl});
+  const ContactCard({
+    super.key,
+    required this.name,
+    required this.number,
+  });
 
   @override
   State<ContactCard> createState() => _ContactCardState();
@@ -86,24 +84,22 @@ class _ContactCardState extends State<ContactCard> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: widget.imgUrl ?? tempImage,
-              placeholder: (context, url) =>
-                  const Center(child: CircularProgressIndicator()),
-              height: 50,
-              width: 50,
-            ),
+          ProfilePicture(
+            name: widget.name,
+            radius: 24,
+            fontsize: 16,
+            count: 2,
+            random: true,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.name,
-                  // .substring(0, 18),
+                  widget.name.length > 16
+                      ? '${widget.name.substring(0, 16)}..'
+                      : widget.name,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 17,
@@ -124,7 +120,7 @@ class _ContactCardState extends State<ContactCard> {
             icon: const Icon(
               Ionicons.call,
               color: Color(0xff4CB93A),
-              size: 30,
+              size: 25,
             ),
           )
         ],
@@ -162,8 +158,6 @@ class ContactsList extends StatelessWidget {
         }
 
         final contacts = snapshot.data!.docs;
-        print("=============================================================================================================================================================================================================================================================================");
-        print(contacts.length);
         return ListView.builder(
           itemCount: contacts.length,
           itemBuilder: (context, index) {
@@ -171,9 +165,7 @@ class ContactsList extends StatelessWidget {
             final contactData = contact.data() as Map<String, dynamic>;
             final name = contactData['name'] ?? 'No Name';
             final number = contactData['number'] ?? 'No Number';
-            final imageUrl = contactData['image_url'];
             return ContactCard(
-              imgUrl: imageUrl,
               name: name,
               number: number,
             );
@@ -185,8 +177,8 @@ class ContactsList extends StatelessWidget {
 }
 
 class AddFriendButton extends StatefulWidget {
-  final String username;
-  const AddFriendButton({super.key, required this.username});
+  final String userid;
+  const AddFriendButton({super.key, required this.userid});
 
   @override
   State<AddFriendButton> createState() => _AddFriendButtonState();
@@ -204,7 +196,7 @@ class _AddFriendButtonState extends State<AddFriendButton> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AddContactDialog(userId: widget.username);
+                  return AddContactDialog(userId: widget.userid);
                 },
               );
             },
@@ -217,16 +209,26 @@ class _AddFriendButtonState extends State<AddFriendButton> {
               backgroundColor: Colors.grey[200],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(
-              'Add Contact',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 17,
-                color: Colors.blue,
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AddContactDialog(userId: widget.userid);
+                    },
+                  );
+                },
+                style: const ButtonStyle(
+                    textStyle: MaterialStatePropertyAll(
+                  TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                    color: Colors.blue,
+                  ),
+                )),
+                child: const Text(' Add Contact')),
           )
         ],
       ),

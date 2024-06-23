@@ -11,10 +11,10 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RegisterScreenState createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
   final user = FirebaseAuth.instance.currentUser;
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -120,110 +120,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Hero(
-              tag: 'profileImage',
-              child: ClipOval(
-                child: CachedNetworkImage(
-                  imageUrl: user?.photoURL ?? '',
-                  fit: BoxFit.cover,
-                  height: 100,
-                  width: 100,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(
-                    Ionicons.person_circle,
-                    size: 100,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            _buildTextInput(
-              controller: _fullNameController,
-              label: 'Full Name',
-              icon: Ionicons.person,
-              onChanged: (value) {
-                setState(() {
-                  _isFullNameValid = value.isNotEmpty;
-                });
-              },
-              isValid: _isFullNameValid,
-            ),
-            const SizedBox(height: 20),
-            _buildTextInput(
-              controller: _emailController,
-              label: 'Email',
-              icon: Ionicons.mail,
-              onChanged: (value) {
-                setState(() {
-                  _isEmailValid = value.isNotEmpty && value.contains('@');
-                });
-              },
-              isValid: _isEmailValid,
-            ),
-            const SizedBox(height: 20),
-            _buildTextInput(
-              controller: _phoneController,
-              label: 'Phone Number',
-              icon: Ionicons.call,
-              onChanged: (value) {
-                setState(() {
-                  _isPhoneValid = value.isNotEmpty && value.length == 10;
-                });
-              },
-              isValid: _isPhoneValid,
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () => _selectDate(context),
-              child: AbsorbPointer(
-                child: _buildTextInput(
-                  controller: _dobController,
-                  label: 'Date of Birth',
-                  icon: Ionicons.calendar,
-                  onChanged: (value) {},
-                  isValid: _isDobValid,
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Gender", style: TextStyle(fontSize: 18)),
-                _buildGenderOption(Ionicons.man, 'Male', 'male'),
-                _buildGenderOption(Ionicons.woman, 'Female', 'female'),
-              ],
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 48,
-              child: ElevatedButton.icon(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(
-                    Colors.grey[300],
-                  ),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Hero(
+                tag: 'profileImage',
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: user?.photoURL ?? '',
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => const Icon(
+                      Ionicons.person_circle,
+                      size: 100,
                     ),
                   ),
-                  elevation: MaterialStatePropertyAll(0),
                 ),
-                onPressed: _register,
-                icon: const Icon(
-                  Ionicons.log_in,
-                  color: Colors.blue,
-                ),
-                label: const Text('Register',
-                    style: TextStyle(color: Colors.blue)),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              _buildTextInput(
+                controller: _fullNameController,
+                label: 'Full Name',
+                icon: Ionicons.person,
+                onChanged: (value) {
+                  setState(() {
+                    _isFullNameValid = value.isNotEmpty;
+                  });
+                },
+                isValid: _isFullNameValid,
+              ),
+              const SizedBox(height: 20),
+              _buildTextInput(
+                controller: _emailController,
+                label: 'Email',
+                icon: Ionicons.mail,
+                onChanged: (value) {
+                  setState(() {
+                    _isEmailValid = value.isNotEmpty && value.contains('@');
+                  });
+                },
+                isValid: _isEmailValid,
+              ),
+              const SizedBox(height: 20),
+              _buildTextInput(
+                controller: _phoneController,
+                label: 'Phone Number',
+                icon: Ionicons.call,
+                onChanged: (value) {
+                  setState(() {
+                    _isPhoneValid = value.isNotEmpty && value.length == 10;
+                  });
+                },
+                isValid: _isPhoneValid,
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () => _selectDate(context),
+                child: AbsorbPointer(
+                  child: _buildTextInput(
+                    controller: _dobController,
+                    label: 'Date of Birth',
+                    icon: Ionicons.calendar,
+                    onChanged: (value) {},
+                    isValid: _isDobValid,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text("Gender", style: TextStyle(fontSize: 18)),
+                  _buildGenderOption(Ionicons.man, 'Male', 'male'),
+                  _buildGenderOption(Ionicons.woman, 'Female', 'female'),
+                ],
+              ),
+              const SizedBox(height: 30),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 48,
+                child: ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(
+                      Colors.grey[300],
+                    ),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    elevation: const MaterialStatePropertyAll(0),
+                  ),
+                  onPressed: _register,
+                  icon: const Icon(
+                    Ionicons.log_in,
+                    color: Colors.blue,
+                  ),
+                  label: const Text('Register',
+                      style: TextStyle(color: Colors.blue)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

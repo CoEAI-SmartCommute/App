@@ -64,9 +64,6 @@ class PermissionScreenState extends State<PermissionScreen> {
   }
 
   void _proceed() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('All permissions granted. Welcome...')),
-    );
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const HomeScreen()));
   }

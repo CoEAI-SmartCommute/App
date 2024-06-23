@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
-
 
 class AddContactDialog extends StatefulWidget {
   final String userId;
@@ -19,16 +15,7 @@ class AddContactDialog extends StatefulWidget {
 class AddContactDialogState extends State<AddContactDialog> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
-  File? _imageFile;
   bool _isUploading = false;
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _imageFile = pickedFile != null ? File(pickedFile.path) : null;
-    });
-  }
 
   Future<void> _pickContact() async {
     if (await Permission.contacts.request().isGranted) {
@@ -51,20 +38,9 @@ class AddContactDialogState extends State<AddContactDialog> {
       _isUploading = true;
     });
 
-    String? imageUrl;
-    if (_imageFile != null) {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('contact_images')
-          .child('${DateTime.now().toIso8601String()}.jpg');
-      await ref.putFile(_imageFile!);
-      imageUrl = await ref.getDownloadURL();
-    }
-
     final contactData = {
       'name': _nameController.text,
       'number': _numberController.text,
-      'image_url': imageUrl,
     };
 
     await FirebaseFirestore.instance
@@ -96,16 +72,6 @@ class AddContactDialogState extends State<AddContactDialog> {
             decoration: const InputDecoration(labelText: 'Number'),
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 10),
-          _imageFile != null
-              ? Image.file(
-                  _imageFile!,
-                  height: 100,
-                )
-              : TextButton(
-                  onPressed: _pickImage,
-                  child: const Text('Select Image'),
-                ),
           const SizedBox(height: 10),
           TextButton(
             onPressed: _pickContact,
