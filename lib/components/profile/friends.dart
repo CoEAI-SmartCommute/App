@@ -156,7 +156,7 @@ class ContactsList extends StatelessWidget {
             child: Text('No contacts found.'),
           ));
         }
-
+    
         final contacts = snapshot.data!.docs;
         return ListView.builder(
           itemCount: contacts.length,
