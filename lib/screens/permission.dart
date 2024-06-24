@@ -17,6 +17,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   bool _callGranted = false;
   bool _notifiGranted = false;
   final Location _locationService = Location();
+
   @override
   void initState() {
     super.initState();
@@ -24,8 +25,20 @@ class PermissionScreenState extends State<PermissionScreen> {
   }
 
   Future<void> _checkPermissions() async {
-    await _locationService.serviceEnabled();
-    await _locationService.requestService();
+    bool serviceEnabled = await _locationService.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _locationService.requestService();
+      if (!serviceEnabled) {
+        // If the user does not enable the service, we can't proceed
+        return;
+      }
+    }
+
+    await _locationService.changeSettings(
+      accuracy: LocationAccuracy.high,
+      interval: 1000,
+    );
+
     _locationGranted = await Permission.location.isGranted;
     _smsGranted = await Permission.sms.isGranted;
     _callGranted = await Permission.phone.isGranted;
@@ -35,19 +48,18 @@ class PermissionScreenState extends State<PermissionScreen> {
 
   Future<void> _requestPermission(Permission permission) async {
     final status = await permission.request();
-    await _locationService.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 1000,
-    );
 
     setState(() {
       if (permission == Permission.location) {
         _locationGranted = status.isGranted;
-      } else if (permission == Permission.sms) {
+      }
+      if (permission == Permission.sms) {
         _smsGranted = status.isGranted;
-      } else if (permission == Permission.phone) {
+      }
+      if (permission == Permission.phone) {
         _callGranted = status.isGranted;
-      } else if (permission == Permission.notification) {
+      }
+      if (permission == Permission.notification) {
         _notifiGranted = status.isGranted;
       }
     });
@@ -114,7 +126,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   Widget permissionCard(
     IconData icon,
     String title,
-    dynamic service,
+    Permission permission,
     bool isGranted,
   ) {
     return Padding(
@@ -136,7 +148,7 @@ class PermissionScreenState extends State<PermissionScreen> {
               MaterialButton(
                 elevation: 0,
                 onPressed: () async {
-                  await _requestPermission(service);
+                  if (!isGranted) await _requestPermission(permission);
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),

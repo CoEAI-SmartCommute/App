@@ -61,10 +61,12 @@ class HomeMapState extends State<HomeMap> {
       longitude: userLocation.longitude!,
     );
     mapController.changeLocation(newLocation);
-    if (!context.mounted) return;
-    context.read<LocationProvider>().updateCurrentLocation(
-          location: newLocation,
-        );
+    mapController.setZoom(zoomLevel: 14);
+    if (mounted) {
+      context.read<LocationProvider>().updateCurrentLocation(
+            location: newLocation,
+          );
+    }
   }
 
   void reloadMap() async {
@@ -77,30 +79,13 @@ class HomeMapState extends State<HomeMap> {
       body: Stack(
         children: [
           OSMFlutter(
-            osmOption: OSMOption(
-                userLocationMarker: UserLocationMaker(
-                  personMarker: const MarkerIcon(
-                    icon: Icon(
-                      Icons.circle,
-                      color: Colors.blue,
-                      size: 48,
-                    ),
-                  ),
-                  directionArrowMarker: const MarkerIcon(
-                    icon: Icon(
-                      Icons.circle,
-                      color: Colors.blue,
-                      size: 48,
-                    ),
-                  ),
-                ),
-                zoomOption: const ZoomOption(
-                    initZoom: 25, // Set higher initial zoom level here
-                    minZoomLevel: 3,
+            osmOption: const OSMOption(
+                zoomOption: ZoomOption(
+                    initZoom: 3,
+                    minZoomLevel: 5,
                     maxZoomLevel: 19,
                     stepZoom: 1.0),
-                userTrackingOption:
-                    const UserTrackingOption(enableTracking: true)),
+                userTrackingOption: UserTrackingOption(enableTracking: true)),
             controller: mapController,
           ),
           Align(

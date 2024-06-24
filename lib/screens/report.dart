@@ -59,7 +59,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   decoration: BoxDecoration(
                       color: const Color(0xffEEEEEE),
                       borderRadius: BorderRadius.circular(8)),
-                      alignment: Alignment.center,
+                  alignment: Alignment.center,
                   child: Text(
                     '${context.watch<LocationProvider>().currentLocation!.latitude} , ${context.watch<LocationProvider>().currentLocation!.longitude}',
                   ),
@@ -202,54 +202,56 @@ class _ReportScreenState extends State<ReportScreen> {
 
   Future imgInput() async {
     await storagePermission();
-    if (!context.mounted) return;
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(
-              'Upload Image',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+    if (mounted) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                'Upload Image',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            content: const SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                    'From where would you like to upload image ?',
-                  ),
-                ],
+              content: const SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      'From where would you like to upload image ?',
+                    ),
+                  ],
+                ),
               ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Gallery'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  final DeviceInfoPlugin info = DeviceInfoPlugin();
-                  final AndroidDeviceInfo androidInfo = await info.androidInfo;
-                  final int androidVersion =
-                      int.parse(androidInfo.version.release);
-                  if (androidVersion >= 13) {
-                    getFromCamera13();
-                  } else {
-                    getImageGallery();
-                  }
-                },
-              ),
-              TextButton(
-                child: const Text('Camera'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  getImageCamera();
-                },
-              ),
-            ],
-          );
-        });
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Gallery'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    final DeviceInfoPlugin info = DeviceInfoPlugin();
+                    final AndroidDeviceInfo androidInfo =
+                        await info.androidInfo;
+                    final int androidVersion =
+                        int.parse(androidInfo.version.release);
+                    if (androidVersion >= 13) {
+                      getFromCamera13();
+                    } else {
+                      getImageGallery();
+                    }
+                  },
+                ),
+                TextButton(
+                  child: const Text('Camera'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    getImageCamera();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   Future getImageGallery() async {
@@ -360,14 +362,16 @@ class _ReportScreenState extends State<ReportScreen> {
           FirebaseStorage.instance.ref().child('Reports').child(id);
       await storageRef.putFile(_selectedImage!);
       final imgURL = await storageRef.getDownloadURL();
-      await uploadDetails(
-          location: GeoPoint(
-              context.read<LocationProvider>().currentLocation!.latitude!,
-              context.read<LocationProvider>().currentLocation!.longitude!),
-          username: user?.displayName ?? 'NA',
-          description: _descriptionController.text,
-          imgurl: imgURL,
-          id: id);
+      if (mounted) {
+        await uploadDetails(
+            location: GeoPoint(
+                context.read<LocationProvider>().currentLocation!.latitude,
+                context.read<LocationProvider>().currentLocation!.longitude),
+            username: user?.displayName ?? 'NA',
+            description: _descriptionController.text,
+            imgurl: imgURL,
+            id: id);
+      }
       if (!mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(context).clearSnackBars();

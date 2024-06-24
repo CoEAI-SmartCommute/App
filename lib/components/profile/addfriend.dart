@@ -52,8 +52,9 @@ class AddContactDialogState extends State<AddContactDialog> {
     setState(() {
       _isUploading = false;
     });
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
