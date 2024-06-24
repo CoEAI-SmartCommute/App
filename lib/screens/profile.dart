@@ -21,18 +21,21 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Stack(alignment: Alignment.bottomCenter,
           children: [
-            UserData(),
-            SizedBox(
-              height: 10,
-            ),
-            ProfileFriends(),
-            Expanded(child: SizedBox()),
-            ProfileLogout(),
-          ],
-        ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              UserData(),
+              SizedBox(
+                height: 10,
+              ),
+              ProfileFriends(),
+              Expanded(child: SizedBox()),
+            ],
+          ),
+          ProfileLogout(),
+        ]),
       ),
     );
   }
