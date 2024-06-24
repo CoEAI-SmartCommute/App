@@ -25,9 +25,15 @@ class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // _locationController.text = "Deepanshu";
     return Scaffold(
       backgroundColor: const Color(0xffF7F7F6),
       appBar: AppBar(
@@ -64,23 +70,6 @@ class _ReportScreenState extends State<ReportScreen> {
                     '${context.watch<LocationProvider>().currentLocation!.latitude} , ${context.watch<LocationProvider>().currentLocation!.longitude}',
                   ),
                 ),
-                //  TextFormField(
-                //   initialValue: ,
-                //   keyboardType: TextInputType.multiline,
-
-                //   decoration: const InputDecoration(
-                //     filled: true,
-                //     fillColor: Color(0xffEEEEEE),
-                //     border: InputBorder.none,
-                //     hintText: 'Choose Location',
-                //   ),
-                //   validator: (value) {
-                //     if (value == null || value.trim().isEmpty) {
-                //       return 'Please enter a valid name';
-                //     }
-                //     return null;
-                //   },
-                // ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -386,7 +375,8 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         ),
       );
-      formKey.currentState!.reset();
+      // formKey.currentState!.reset();
+      _descriptionController.text = "";
       _selectedImage = null;
       setState(() {});
     } catch (e) {

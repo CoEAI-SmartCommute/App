@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/components/suggestions.dart';
 import 'package:smart_commute/components/home/forumupdates.dart';
+import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/screens/report.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomeBottomSheet extends StatefulWidget {
   const HomeBottomSheet({super.key});
@@ -134,6 +138,7 @@ class ShareLocationButton extends StatefulWidget {
 class _ShareLocationButtonState extends State<ShareLocationButton> {
   @override
   Widget build(BuildContext context) {
+    final currentLocationProvider = Provider.of<LocationProvider>(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 48,
@@ -149,7 +154,15 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
           ),
           elevation: const MaterialStatePropertyAll(0),
         ),
-        onPressed: () {},
+        onPressed: currentLocationProvider.currentLocation == null
+            ? null
+            : () {
+                final latitude =
+                    currentLocationProvider.currentLocation!.latitude;
+                final longitude =
+                    currentLocationProvider.currentLocation!.longitude;
+                shareMyLocation(lat: latitude, long: longitude);
+              },
         child: const Text(
           'Share My Location',
           style: TextStyle(color: Colors.blue),
@@ -157,6 +170,16 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
       ),
     );
   }
+}
+
+void shareMyLocation({required lat, required long}) async {
+  final prefs = await SharedPreferences.getInstance();
+  final gender = prefs.getString('gender') == 'male' ? 'his' : 'her';
+  final name = prefs.getString('fullName');
+  final url = "https://www.google.com/maps/place/$lat,$long";
+  await Share.share(
+    "Hey, $name wants to share $gender current location. You can track them through this link: $url",
+  );
 }
 
 class ReportButton extends StatefulWidget {

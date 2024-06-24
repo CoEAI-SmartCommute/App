@@ -99,5 +99,5 @@ class HomeMapState extends State<HomeMap> {
         ],
       ),
     );
-  }
+   }
 }

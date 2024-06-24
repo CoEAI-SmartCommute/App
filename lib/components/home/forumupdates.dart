@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smart_commute/components/home/recent_updates.dart';
 
 class RecentUpdates extends StatefulWidget {
   const RecentUpdates({super.key});
@@ -9,7 +10,7 @@ class RecentUpdates extends StatefulWidget {
 }
 
 class RecentUpdatesState extends State<RecentUpdates> {
-  bool showAll = false;
+  // bool showAll = false;
 
   final List<Map<String, String>> placeholderComments = [
     {
@@ -36,7 +37,7 @@ class RecentUpdatesState extends State<RecentUpdates> {
 
   @override
   Widget build(BuildContext context) {
-    int commentsToShow = showAll ? placeholderComments.length : 2;
+    int commentsToShow = 2;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,12 +56,33 @@ class RecentUpdatesState extends State<RecentUpdates> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  showAll = !showAll;
+                  // showAll = !showAll;
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          RecentComments(comments: placeholderComments),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        var begin = const Offset(0.0, 1.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
                 });
               },
-              child: Text(
-                showAll ? 'Show Less' : 'More',
-                style: const TextStyle(
+              child: const Text(
+                'More',
+                style: TextStyle(
                   color: Colors.blue,
                   fontSize: 15,
                 ),

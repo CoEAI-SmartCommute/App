@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,6 +158,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20),
               _buildTextInput(
                 controller: _emailController,
+                keyBoard: TextInputType.emailAddress,
                 label: 'Email',
                 icon: Ionicons.mail,
                 onChanged: (value) {
@@ -169,6 +171,7 @@ class RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20),
               _buildTextInput(
                 controller: _phoneController,
+                keyBoard: TextInputType.phone,
                 label: 'Phone Number',
                 icon: Ionicons.call,
                 onChanged: (value) {
@@ -238,8 +241,10 @@ class RegisterScreenState extends State<RegisterScreen> {
     required IconData icon,
     required Function(String) onChanged,
     required bool isValid,
+    TextInputType keyBoard = TextInputType.name
   }) {
     return TextField(
+      keyboardType:keyBoard ,
       controller: controller,
       decoration: InputDecoration(
         labelText: label,

@@ -69,6 +69,7 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_profile_picture: ^2.0.0
   flutter_osm_plugin: ^0.70.4
+  share_plus: ^9.0.0
 
 
 dev_dependencies:
