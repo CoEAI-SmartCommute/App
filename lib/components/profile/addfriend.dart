@@ -29,8 +29,8 @@ class AddContactDialogState extends State<AddContactDialog> {
           _numberController.text = contact.phones?.isNotEmpty == true
               ? contact.phones!.first.value ?? ''
               : '';
-              _validateName = false;
-              _validateNum = false;
+          _validateName = false;
+          _validateNum = false;
         });
       }
     }
@@ -86,6 +86,7 @@ class AddContactDialogState extends State<AddContactDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.all(15),
       child: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -99,32 +100,40 @@ class AddContactDialogState extends State<AddContactDialog> {
                   padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
                   child: Text(
                     "Full Name",
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 13,
+                    ),
                   ),
                 ),
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.grey.shade300)),
-                      fillColor: Colors.grey[300],
-                      filled: true,
-                      labelText: 'Enter Full Name',
-                      errorText: _validateName ? "Invalid Name" : null,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
-                      onChanged: (value){
-                        if(value.isEmpty){
-                          setState(() {
-                            _validateName = true;
-                          });
-                        }else{
-                          setState(() {
-                            _validateName = false;
-                          });
-                        }
-                      },
+                SizedBox(
+                  height: 50,
+                  child: TextField(
+                    controller: _nameController,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade300)),
+                        fillColor: Colors.grey[300],
+                        filled: true,
+                        labelText: 'Enter Full Name',
+                        errorText: _validateName ? "Invalid Name" : null,
+                        labelStyle: TextStyle(color: Colors.grey[600])),
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        setState(() {
+                          _validateName = true;
+                        });
+                      } else {
+                        setState(() {
+                          _validateName = false;
+                        });
+                      }
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -137,6 +146,7 @@ class AddContactDialogState extends State<AddContactDialog> {
                   ),
                 ),
                 TextField(
+                  textAlignVertical: TextAlignVertical.center,
                   controller: _numberController,
                   decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -149,12 +159,12 @@ class AddContactDialogState extends State<AddContactDialog> {
                       errorText: _validateNum ? "10 digits required" : null,
                       labelStyle: TextStyle(color: Colors.grey[600])),
                   keyboardType: TextInputType.phone,
-                  onChanged: (value){
-                    if(value.length >= 10){
+                  onChanged: (value) {
+                    if (value.length >= 10) {
                       setState(() {
                         _validateNum = false;
                       });
-                    }else{
+                    } else {
                       setState(() {
                         _validateNum = true;
                       });
@@ -170,8 +180,11 @@ class AddContactDialogState extends State<AddContactDialog> {
                       iconColor: Colors.blue,
                       onTap: _pickContact,
                       leading: const Icon(Icons.contacts),
-                      title:
-                          const FittedBox(child: Text("Import from Contacts")),
+                      title: const FittedBox(
+                          child: Text(
+                        "Import from Contacts",
+                        style: TextStyle(fontSize: 14),
+                      )),
                       tileColor: Colors.grey[300],
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.horizontal(
@@ -189,6 +202,47 @@ class AddContactDialogState extends State<AddContactDialog> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 15,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.close,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              FittedBox(
+                                  child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                ),
+                              )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     GestureDetector(
                       onTap: _isUploading ? null : _uploadContact,
                       child: Container(
@@ -222,47 +276,6 @@ class AddContactDialogState extends State<AddContactDialog> {
                               FittedBox(
                                   child: Text(
                                 "Add Contact",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                ),
-                              )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 15,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                color: Colors.blue,
-                                size: 30,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              FittedBox(
-                                  child: Text(
-                                "Cancel",
                                 style: TextStyle(
                                   color: Colors.grey[600],
                                 ),
