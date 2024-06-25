@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:smart_commute/components/home/recent_updates.dart';
+import 'package:smart_commute/components/forum/recent_updates.dart';
 
 class RecentUpdates extends StatefulWidget {
   const RecentUpdates({super.key});

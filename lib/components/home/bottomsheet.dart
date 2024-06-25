@@ -5,8 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_commute/components/savedlocations.dart';
 import 'package:smart_commute/components/man_route.dart';
 import 'package:smart_commute/components/suggestions.dart';
-import 'package:smart_commute/components/home/forumupdates.dart';
+import 'package:smart_commute/components/forum/forumupdates.dart';
 import 'package:smart_commute/providers/location_provider.dart';
+import 'package:smart_commute/screens/chat.dart';
 import 'package:smart_commute/screens/report.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -84,7 +85,14 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ChatScreen(),
+                              ),
+                            );
+                          },
                           icon: const Icon(
                             Ionicons.mic,
                             size: 30,
