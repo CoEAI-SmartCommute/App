@@ -1,25 +1,117 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:images_picker/images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddContactDialog extends StatefulWidget {
   final String userId;
 
-  const AddContactDialog({super.key, required this.userId});
+  const AddContactDialog({Key? key, required this.userId}) : super(key: key);
 
   @override
   AddContactDialogState createState() => AddContactDialogState();
 }
 
 class AddContactDialogState extends State<AddContactDialog> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
   bool _isUploading = false;
-  bool _validateNum = false;
 
-  bool _validateName = false;
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.white,
+      insetPadding: const EdgeInsets.all(15),
+      child: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildNameField(),
+              const SizedBox(height: 20),
+              _buildPhoneField(),
+              const SizedBox(height: 20),
+              _buildImportButton(),
+              const SizedBox(height: 20),
+              _buildActionButtons(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNameField() {
+    return CustomFormField(
+      controller: _nameController,
+      label: 'Full Name',
+      hintText: 'Enter Full Name',
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a name';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildPhoneField() {
+    return CustomFormField(
+      controller: _numberController,
+      label: 'Phone Number',
+      hintText: 'Enter Phone Number',
+      keyboardType: TextInputType.phone,
+      validator: (value) {
+        if (value == null || value.length < 10) {
+          return '10 digits required';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildImportButton() {
+    return Center(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width / 1.8,
+        child: CustomFlatButton(
+          onPressed: _pickContact,
+          icon: Icons.contacts,
+          label: 'Import from Contacts',
+          color: Colors.grey[600]!,
+          iconColor: Colors.blue,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CustomFlatButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Icons.close,
+          label: 'Cancel',
+          color: Colors.grey[600]!,
+          iconColor: Colors.blue,
+        ),
+        CustomFlatButton(
+          onPressed: _isUploading ? null : _submitForm,
+          icon: _isUploading ? null : Icons.add,
+          label: 'Add Contact',
+          color: Colors.grey[600]!,
+          iconColor: Colors.blue,
+          isLoading: _isUploading,
+        ),
+      ],
+    );
+  }
+
   Future<void> _pickContact() async {
     if (await Permission.contacts.request().isGranted) {
       final Contact? contact = await ContactsService.openDeviceContactPicker();
@@ -29,267 +121,147 @@ class AddContactDialogState extends State<AddContactDialog> {
           _numberController.text = contact.phones?.isNotEmpty == true
               ? contact.phones!.first.value ?? ''
               : '';
-          _validateName = false;
-          _validateNum = false;
         });
       }
     }
   }
 
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _uploadContact();
+    }
+  }
+
   Future<void> _uploadContact() async {
-    if (_numberController.text.length < 10 && _nameController.text.isEmpty) {
-      setState(() {
-        _validateName = true;
-        _validateNum = true;
-      });
-      return;
-    }
-    if (_numberController.text.length < 10) {
-      setState(() {
-        _validateNum = true;
-      });
-
-      return;
-    }
-    if (_nameController.text.isEmpty) {
-      setState(() {
-        _validateName = true;
-      });
-      return;
-    }
-
     setState(() {
       _isUploading = true;
     });
 
-    final contactData = {
-      'name': _nameController.text,
-      'number': _numberController.text,
-    };
+    try {
+      final contactData = {
+        'name': _nameController.text,
+        'number': _numberController.text,
+      };
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.userId)
-        .collection('friend_contacts')
-        .add(contactData);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .collection('friend_contacts')
+          .add(contactData);
 
-    setState(() {
-      _isUploading = false;
-      _validateName = false;
-      _validateNum = false;
-    });
-    if (mounted) {
-      Navigator.of(context).pop();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading contact: $e')),
+      );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
     }
   }
+}
+
+class CustomFormField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hintText;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+
+  const CustomFormField({
+    Key? key,
+    required this.controller,
+    required this.label,
+    required this.hintText,
+    this.validator,
+    this.keyboardType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.white,
-      insetPadding: const EdgeInsets.all(15),
-      child: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: SingleChildScrollView(
-          child: IntrinsicHeight(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-                  child: Text(
-                    "Full Name",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 50,
-                  child: TextField(
-                    controller: _nameController,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade300)),
-                        fillColor: Colors.grey[300],
-                        filled: true,
-                        labelText: 'Enter Full Name',
-                        errorText: _validateName ? "Invalid Name" : null,
-                        labelStyle: TextStyle(color: Colors.grey[600])),
-                    onChanged: (value) {
-                      if (value.isEmpty) {
-                        setState(() {
-                          _validateName = true;
-                        });
-                      } else {
-                        setState(() {
-                          _validateName = false;
-                        });
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
-                  child: Text(
-                    "Phone Number",
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ),
-                TextField(
-                  textAlignVertical: TextAlignVertical.center,
-                  controller: _numberController,
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: Colors.grey.shade300)),
-                      fillColor: Colors.grey[300],
-                      filled: true,
-                      labelText: 'Enter Phone Number',
-                      errorText: _validateNum ? "10 digits required" : null,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
-                  keyboardType: TextInputType.phone,
-                  onChanged: (value) {
-                    if (value.length >= 10) {
-                      setState(() {
-                        _validateNum = false;
-                      });
-                    } else {
-                      setState(() {
-                        _validateNum = true;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 1.8,
-                    child: ListTile(
-                      textColor: Colors.grey[600],
-                      iconColor: Colors.blue,
-                      onTap: _pickContact,
-                      leading: const Icon(Icons.contacts),
-                      title: const FittedBox(
-                          child: Text(
-                        "Import from Contacts",
-                        style: TextStyle(fontSize: 14),
-                      )),
-                      tileColor: Colors.grey[300],
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.horizontal(
-                            right: Radius.circular(10),
-                            left: Radius.circular(10)),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                    child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 15,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                color: Colors.blue,
-                                size: 30,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              FittedBox(
-                                  child: Text(
-                                "Cancel",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                ),
-                              )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: _isUploading ? null : _uploadContact,
-                      child: Container(
-                        height: MediaQuery.of(context).size.height / 15,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            children: [
-                              _isUploading
-                                  ? const SizedBox(
-                                      width: 30,
-                                      child: CircularProgressIndicator())
-                                  : const Icon(
-                                      Icons.add,
-                                      color: Colors.blue,
-                                      size: 30,
-                                    ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              FittedBox(
-                                  child: Text(
-                                "Add Contact",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                ),
-                              )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ))
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            hintText: hintText,
+            fillColor: Colors.grey[300],
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
             ),
           ),
+          validator: validator,
+          keyboardType: keyboardType,
+        ),
+      ],
+    );
+  }
+}
+
+class CustomFlatButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final IconData? icon;
+  final String label;
+  final Color color;
+  final Color iconColor;
+  final bool isLoading;
+
+  const CustomFlatButton({
+    super.key,
+    required this.onPressed,
+    this.icon,
+    required this.label,
+    required this.color,
+    required this.iconColor,
+    this.isLoading = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.grey[300],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isLoading)
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ),
+              )
+            else if (icon != null)
+              Icon(icon, color: iconColor, size: 30),
+            if (icon != null || isLoading) const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                label,
+                style: TextStyle(color: color),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ),
     );

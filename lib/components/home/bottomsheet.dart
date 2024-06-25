@@ -62,25 +62,53 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.74,
                         height: 36,
-                        child: TextField(
-                          textAlignVertical: TextAlignVertical.center,
-                          textAlign: TextAlign.left,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8),
-                            fillColor: const Color(0xffE9E9E9),
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      const ChatScreen(),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = const Offset(0.0, 1.0);
+                                var end = Offset.zero;
+                                var curve = Curves.ease;
+
+                                var tween = Tween(begin: begin, end: end)
+                                    .chain(CurveTween(curve: curve));
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+                          child: Hero(
+                            tag: "searchBar",
+                            child: TextField(
+                              readOnly: true,
+                              textAlignVertical: TextAlignVertical.center,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 8),
+                                fillColor: const Color(0xffE9E9E9),
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 0,
+                                    style: BorderStyle.none,
+                                  ),
+                                ),
+                                hintText: 'Hi! Where do you want to go?',
+                                hintStyle: const TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal),
                               ),
                             ),
-                            hintText: 'Hi! Where do you want to go?',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
