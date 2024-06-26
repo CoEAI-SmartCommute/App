@@ -17,7 +17,7 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   final user = FirebaseAuth.instance.currentUser;
-  List<types.Message> _messages = [];
+  final List<types.Message> _messages = [];
   types.User _user = const types.User(id: 'user_id');
   final types.User _bot = const types.User(id: 'bot_id');
   final _uuid = const Uuid();

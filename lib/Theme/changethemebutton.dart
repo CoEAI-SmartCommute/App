@@ -17,20 +17,17 @@ class _ChangeThemeButtonState extends State<ChangeThemeButton> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: Switch.adaptive(
-        thumbIcon: MaterialStatePropertyAll(
-          isDark ? const Icon(Icons.nightlight_sharp) : const Icon(Icons.sunny),
-        ),
-        activeColor: Colors.amber,
-        value: themeProvider.isDarkMode,
-        onChanged: (value) {
+      child: IconButton(
+        icon: Icon(isDark ? Icons.nightlight_sharp : Icons.sunny),
+        color: isDark ? Colors.yellow : Colors.amber,
+        onPressed: () {
           showDialog(
               context: context,
               builder: (context) {
                 return const Center(child: CircularProgressIndicator());
               });
           final provider = Provider.of<ThemeProvider>(context, listen: false);
-          provider.toggleTheme(value);
+          provider.toggleTheme(!isDark);
           Navigator.of(context).pop();
         },
       ),

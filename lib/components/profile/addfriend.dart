@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 class AddContactDialog extends StatefulWidget {
   final String userId;
 
-  const AddContactDialog({Key? key, required this.userId}) : super(key: key);
+  const AddContactDialog({super.key, required this.userId});
 
   @override
   AddContactDialogState createState() => AddContactDialogState();
@@ -172,13 +172,13 @@ class CustomFormField extends StatelessWidget {
   final TextInputType? keyboardType;
 
   const CustomFormField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.label,
     required this.hintText,
     this.validator,
     this.keyboardType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
