@@ -6,15 +6,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/login/register.dart';
-import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/firebase_options.dart';
 import 'package:smart_commute/login/googlesignin.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_commute/providers/shake_provider.dart';
+import 'package:smart_commute/providers/theme_provider.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/permission.dart';
 import 'package:smart_commute/services/permissioncheck.dart';
+import 'package:smart_commute/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,21 +37,27 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => GoogleSignInProvider(),
-            // builder: (context, child) => MaterialApp(
-            //   theme: appTheme,
-            //   debugShowCheckedModeBanner: false,
-            //   home: const MyHomePage(),
-            // ),
+          ),
+          ChangeNotifierProvider(
+            create: (cnotext) => ShakeDetectorProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => LocationProvider(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => ThemeProvider(),
+            builder: (context, child) {
+              final themeProvider = Provider.of<ThemeProvider>(context);
+              return MaterialApp(
+                themeMode: themeProvider.themeMode,
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                debugShowCheckedModeBanner: false,
+                home: const MyHomePage(),
+              );
+            },
+          )
         ],
-        child: MaterialApp(
-          theme: appTheme,
-          debugShowCheckedModeBanner: false,
-          home: const MyHomePage(),
-        ),
       );
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smart_commute/screens/savedlocation.dart';
 
 class SavedLocations extends StatefulWidget {
   const SavedLocations({super.key});
@@ -107,7 +108,13 @@ class AddLocButton extends StatelessWidget {
       child: Column(
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SaveLocationScreen(),
+                ),
+              );
+            },
             icon: const Icon(
               Ionicons.add,
               color: Colors.blue,

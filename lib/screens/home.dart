@@ -2,10 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_commute/components/home/bottomsheet.dart';
 import 'package:smart_commute/components/home/sosbutton.dart';
 import 'package:smart_commute/components/home/map.dart';
+import 'package:smart_commute/providers/shake_provider.dart';
+import 'package:smart_commute/providers/theme_provider.dart';
 import 'package:smart_commute/screens/profile.dart';
+import 'package:smart_commute/screens/sos.dart';
+import 'package:smart_commute/theme/changethemebutton.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +22,16 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    final shakeProvider =
+        Provider.of<ShakeDetectorProvider>(context, listen: false);
+
+    shakeProvider.setShakeCallback(() {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const SosScreen()),
+      );
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -25,13 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_outlined),
-          ),
-          const ProfileButton()
-        ],
+        actions: const [ChangeThemeButton(), ProfileButton()],
       ),
       body: const Stack(
         children: [
@@ -73,9 +82,9 @@ class _ProfileButtonState extends State<ProfileButton> {
               var begin = const Offset(0.0, 1.0);
               var end = Offset.zero;
               var curve = Curves.ease;
-      
-              var tween = Tween(begin: begin, end: end)
-                  .chain(CurveTween(curve: curve));
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
               return SlideTransition(
                 position: animation.drive(tween),
                 child: child,

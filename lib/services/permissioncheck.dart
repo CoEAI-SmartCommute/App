@@ -7,10 +7,10 @@ Future<bool> checkPermissions() async {
   bool locationGranted = await Permission.location.isGranted;
   bool smsGranted = await Permission.sms.isGranted;
   bool callGranted = await Permission.phone.isGranted;
-  bool notifiGranted = await Permission.notification.isGranted;
+  // bool notifiGranted = await Permission.notification.isGranted;
   return locationGranted &&
       smsGranted &&
       callGranted &&
-      notifiGranted &&
+      // notifiGranted &&
       serviceEnabled;
 }

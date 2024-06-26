@@ -15,7 +15,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   bool _locationGranted = false;
   bool _smsGranted = false;
   bool _callGranted = false;
-  bool _notifiGranted = false;
+  // bool _notifiGranted = false;
   final Location _locationService = Location();
 
   @override
@@ -42,7 +42,7 @@ class PermissionScreenState extends State<PermissionScreen> {
     _locationGranted = await Permission.location.isGranted;
     _smsGranted = await Permission.sms.isGranted;
     _callGranted = await Permission.phone.isGranted;
-    _notifiGranted = await Permission.notification.isGranted;
+    // _notifiGranted = await Permission.notification.isGranted;
     setState(() {});
   }
 
@@ -59,9 +59,9 @@ class PermissionScreenState extends State<PermissionScreen> {
       if (permission == Permission.phone) {
         _callGranted = status.isGranted;
       }
-      if (permission == Permission.notification) {
-        _notifiGranted = status.isGranted;
-      }
+      // if (permission == Permission.notification) {
+      //   _notifiGranted = status.isGranted;
+      // }
     });
 
     if (status.isPermanentlyDenied) {
@@ -70,7 +70,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   }
 
   bool get _allPermissionsGranted {
-    return _locationGranted && _smsGranted && _callGranted && _notifiGranted;
+    return _locationGranted && _smsGranted && _callGranted;
   }
 
   void _proceed() {
@@ -99,7 +99,7 @@ class PermissionScreenState extends State<PermissionScreen> {
                   permissionCard(FontAwesomeIcons.commentSms, 'Messaging',
                       Permission.sms, _smsGranted),
                   permissionCard(FontAwesomeIcons.bell, 'Notifications',
-                      Permission.notification, _notifiGranted),
+                      Permission.notification, true),
                 ],
               ),
               ElevatedButton(
