@@ -75,7 +75,6 @@ class _ProfileButtonState extends State<ProfileButton> {
   final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Padding(
