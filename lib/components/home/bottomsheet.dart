@@ -9,6 +9,7 @@ import 'package:smart_commute/components/forum/forumupdates.dart';
 import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/screens/chat.dart';
 import 'package:smart_commute/screens/report.dart';
+import 'package:smart_commute/providers/theme_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeBottomSheet extends StatefulWidget {
@@ -21,6 +22,10 @@ class HomeBottomSheet extends StatefulWidget {
 class _HomeBottomSheetState extends State<HomeBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.themeMode == ThemeMode.dark;
+    final sheetColor = isDark ? Colors.grey[900] : Colors.white;
     double sheetPosition = MediaQuery.of(context).size.height * 0.00018;
 
     return DraggableScrollableSheet(
@@ -29,15 +34,16 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
       maxChildSize: MediaQuery.of(context).size.height * 0.001,
       builder: (context, scrollController) {
         return Container(
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 5.0,
-                ),
-              ]),
+          decoration: BoxDecoration(
+            color: sheetColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            boxShadow: [
+              BoxShadow(
+                color: theme.colorScheme.onSurface.withOpacity(0.2),
+                blurRadius: 5.0,
+              ),
+            ],
+          ),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(
               parent: ClampingScrollPhysics(),
@@ -52,7 +58,7 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                     height: 5,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: Colors.grey[300],
+                      color: theme.colorScheme.tertiary,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -85,75 +91,62 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                               },
                             ),
                           ),
-                          child: Hero(
-                            tag: "searchBar",
-                            child: TextField(
-                              readOnly: true,
-                              textAlignVertical: TextAlignVertical.center,
-                              textAlign: TextAlign.left,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 8),
-                                fillColor: const Color(0xffE9E9E9),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
+                          child: TextField(
+                            // readOnly: true,
+                            textAlignVertical: TextAlignVertical.center,
+                            textAlign: TextAlign.left,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              fillColor: theme.colorScheme.tertiary,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 0,
+                                  style: BorderStyle.none,
                                 ),
-                                hintText: 'Hi! Where do you want to go?',
-                                hintStyle: const TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.normal),
+                              ),
+                              hintText: 'Hi! Where do you want to go?',
+                              hintStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: theme.colorScheme.secondary,
                               ),
                             ),
                           ),
                         ),
                       ),
                       IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ChatScreen(),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Ionicons.mic,
-                            size: 30,
-                          )),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ChatScreen(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Ionicons.mic,
+                          size: 30,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const ManualRoutes(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const SavedLocations(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const SuggestionsAi(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const RecentUpdates(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const ShareLocationButton(),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   const ReportButton(),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -174,14 +167,16 @@ class ShareLocationButton extends StatefulWidget {
 class _ShareLocationButtonState extends State<ShareLocationButton> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final currentLocationProvider = Provider.of<LocationProvider>(context);
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 48,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(
-            Colors.grey[200],
+            theme.colorScheme.tertiary,
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -199,9 +194,11 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
                     currentLocationProvider.currentLocation!.longitude;
                 shareMyLocation(lat: latitude, long: longitude);
               },
-        child: const Text(
+        child: Text(
           'Share My Location',
-          style: TextStyle(color: Colors.blue),
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: theme.colorScheme.onSecondary,
+          ),
         ),
       ),
     );
@@ -228,13 +225,15 @@ class ReportButton extends StatefulWidget {
 class _ReportButtonState extends State<ReportButton> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 48,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(
-            Colors.grey[200],
+            theme.colorScheme.tertiary,
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -264,9 +263,11 @@ class _ReportButtonState extends State<ReportButton> {
             },
           ),
         ),
-        child: const Text(
+        child: Text(
           'Report an issue',
-          style: TextStyle(color: Colors.blue),
+          style: theme.textTheme.labelLarge?.copyWith(
+            color: theme.colorScheme.onSecondary,
+          ),
         ),
       ),
     );

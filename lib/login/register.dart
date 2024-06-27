@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -235,16 +234,15 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildTextInput({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    required Function(String) onChanged,
-    required bool isValid,
-    TextInputType keyBoard = TextInputType.name
-  }) {
+  Widget _buildTextInput(
+      {required TextEditingController controller,
+      required String label,
+      required IconData icon,
+      required Function(String) onChanged,
+      required bool isValid,
+      TextInputType keyBoard = TextInputType.name}) {
     return TextField(
-      keyboardType:keyBoard ,
+      keyboardType: keyBoard,
       controller: controller,
       decoration: InputDecoration(
         labelText: label,

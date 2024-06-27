@@ -23,6 +23,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
+    final theme = Theme.of(context);
 
     final shakeProvider =
         Provider.of<ShakeDetectorProvider>(context, listen: false);
@@ -34,12 +35,17 @@ class HomeScreenState extends State<HomeScreen> {
     });
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        backgroundColor:
+            themeProvider.isDarkMode ? Colors.grey[900] : Colors.white,
+        elevation: theme.appBarTheme.elevation,
+        title: Text(
           'Home',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: theme.appBarTheme.titleTextStyle?.color,
           ),
         ),
+        iconTheme: theme.appBarTheme.iconTheme,
         actions: const [ChangeThemeButton(), ProfileButton()],
       ),
       body: const Stack(
@@ -69,6 +75,9 @@ class _ProfileButtonState extends State<ProfileButton> {
   final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
       child: GestureDetector(
@@ -94,7 +103,8 @@ class _ProfileButtonState extends State<ProfileButton> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color:
+                themeProvider.isDarkMode ? Colors.grey[800] : Colors.grey[200],
             borderRadius: BorderRadius.circular(25),
           ),
           child: Row(
