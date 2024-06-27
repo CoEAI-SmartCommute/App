@@ -15,7 +15,7 @@ class PermissionScreenState extends State<PermissionScreen> {
   bool _locationGranted = false;
   bool _smsGranted = false;
   bool _callGranted = false;
-  // bool _notifiGranted = false;
+  bool _notifiGranted = false;
   final Location _locationService = Location();
 
   @override
@@ -25,24 +25,29 @@ class PermissionScreenState extends State<PermissionScreen> {
   }
 
   Future<void> _checkPermissions() async {
-    bool serviceEnabled = await _locationService.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await _locationService.requestService();
-      if (!serviceEnabled) {
-        // If the user does not enable the service, we can't proceed
-        return;
-      }
-    }
-
-    await _locationService.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 1000,
-    );
+   
 
     _locationGranted = await Permission.location.isGranted;
     _smsGranted = await Permission.sms.isGranted;
     _callGranted = await Permission.phone.isGranted;
-    // _notifiGranted = await Permission.notification.isGranted;
+    _notifiGranted = await Permission.notification.isGranted;
+
+
+    if(_locationGranted){
+      bool serviceEnabled = await _locationService.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await _locationService.requestService();
+        if (!serviceEnabled) {
+          // If the user does not enable the service, we can't proceed
+          return;
+        }
+      }
+
+      await _locationService.changeSettings(
+        accuracy: LocationAccuracy.high,
+        interval: 1000,
+      );
+    }
     setState(() {});
   }
 
@@ -59,9 +64,9 @@ class PermissionScreenState extends State<PermissionScreen> {
       if (permission == Permission.phone) {
         _callGranted = status.isGranted;
       }
-      // if (permission == Permission.notification) {
-      //   _notifiGranted = status.isGranted;
-      // }
+      if (permission == Permission.notification) {
+        _notifiGranted = status.isGranted;
+      }
     });
 
     if (status.isPermanentlyDenied) {
@@ -99,7 +104,7 @@ class PermissionScreenState extends State<PermissionScreen> {
                   permissionCard(FontAwesomeIcons.commentSms, 'Messaging',
                       Permission.sms, _smsGranted),
                   permissionCard(FontAwesomeIcons.bell, 'Notifications',
-                      Permission.notification, true),
+                      Permission.notification, _notifiGranted),
                 ],
               ),
               ElevatedButton(

@@ -8,7 +8,8 @@ class ShakeDetectorProvider with ChangeNotifier {
   ShakeDetectorProvider() {
     _shakeDetector = ShakeDetector.autoStart(
       minimumShakeCount: 3,
-      shakeThresholdGravity: 4,
+      shakeThresholdGravity:2 ,
+      shakeCountResetTime: 1000,
       onPhoneShake: () {
         if (onShake != null) {
           onShake!();

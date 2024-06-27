@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/login/register.dart';
 import 'package:smart_commute/firebase_options.dart';
@@ -16,7 +17,6 @@ import 'package:smart_commute/providers/theme_provider.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/permission.dart';
 import 'package:smart_commute/services/permissioncheck.dart';
-import 'package:smart_commute/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
