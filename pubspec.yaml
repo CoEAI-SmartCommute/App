@@ -75,6 +75,7 @@ dependencies:
   http: ^1.2.1
   bubble: ^1.2.1
   shake: ^2.2.0
+  group_button: ^5.3.4
 
 
 dev_dependencies:
