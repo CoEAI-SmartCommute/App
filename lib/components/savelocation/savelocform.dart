@@ -23,6 +23,7 @@ class _SaveLocFormState extends State<SaveLocForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   bool _isUploading = false;
+  String tag = '';
   final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
@@ -103,14 +104,37 @@ class _SaveLocFormState extends State<SaveLocForm> {
   }
 
   Widget _buildTagButtons() {
-    return GroupButton(
-        isRadio: true,
-        options: GroupButtonOptions(
-            borderRadius: BorderRadius.circular(8),
-            spacing: 12,
-            unselectedColor: Colors.white,
-            selectedColor: Colors.red[300]),
-        buttons: const ["Home", "Work", "Other"]);
+    return Column(
+      children: [
+        GroupButton(
+            isRadio: true,
+            onSelected: (value, index, isSelected) {
+              tag = value;
+              setState(() {});
+            },
+            options: GroupButtonOptions(
+                borderRadius: BorderRadius.circular(8),
+                spacing: 12,
+                unselectedColor: Colors.white,
+                selectedColor: Colors.red[300]),
+            buttons: const ["Home", "Work", "Other"]),
+        if (tag == 'Other')
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: TextFormField(
+              onChanged: (value) {
+                tag = value;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a valid address';
+                }
+                return null;
+              },
+            ),
+          )
+      ],
+    );
   }
 
   Widget _buildActionButtons() {
@@ -153,7 +177,8 @@ class _SaveLocFormState extends State<SaveLocForm> {
         'address': _addressController.text,
         'city': widget.city,
         'state': widget.city,
-        'latlng': widget.point
+        'latlng': widget.point,
+        'tag': tag
       };
 
       await FirebaseFirestore.instance

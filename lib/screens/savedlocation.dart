@@ -28,6 +28,12 @@ class SaveLocationScreenState extends State<SaveLocationScreen> {
       latitude: userLocation.latitude!,
       longitude: userLocation.longitude!,
     );
+    Map<String, String> resp =
+        await getCityAndState(newLocation.latitude, newLocation.longitude);
+    setState(() {
+      selectedCity = resp['city']!;
+      selectedState = resp['state']!;
+    });
     _mapController.changeLocation(newLocation);
     _mapController.setZoom(zoomLevel: 14);
   }
@@ -42,7 +48,6 @@ class SaveLocationScreenState extends State<SaveLocationScreen> {
       GeoPoint? point = _mapController.listenerMapSingleTapping.value;
       Map<String, String> resp =
           await getCityAndState(point!.latitude, point.longitude);
-      print(resp);
       setState(() {
         selectedPoint = point;
         selectedCity = resp['city']!;
