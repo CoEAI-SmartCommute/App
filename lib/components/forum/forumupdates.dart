@@ -80,10 +80,10 @@ class RecentUpdatesState extends State<RecentUpdates> {
                   );
                 });
               },
-              child: const Text(
+              child: Text(
                 'More',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.primary,
                   fontSize: 15,
                 ),
               ),

@@ -39,25 +39,26 @@ class MyApp extends StatelessWidget {
             create: (context) => GoogleSignInProvider(),
           ),
           ChangeNotifierProvider(
-            create: (cnotext) => ShakeDetectorProvider(),
+            create: (context) => ShakeDetectorProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => LocationProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => ThemeProvider(),
-            builder: (context, child) {
-              final themeProvider = Provider.of<ThemeProvider>(context);
-              return MaterialApp(
-                themeMode: themeProvider.themeMode,
-                theme: lightTheme,
-                darkTheme: darkTheme,
-                debugShowCheckedModeBanner: false,
-                home: const MyHomePage(),
-              );
-            },
-          )
+          ),
         ],
+        child: Consumer<ThemeProvider>(
+          builder: (context, themeProvider, child) {
+            return MaterialApp(
+              themeMode: themeProvider.themeMode,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              debugShowCheckedModeBanner: false,
+              home: const MyHomePage(),
+            );
+          },
+        ),
       );
 }
 

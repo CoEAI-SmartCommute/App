@@ -59,10 +59,11 @@ class _ManualRoutesState extends State<ManualRoutes> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'Choose starting point',
-                      hintStyle: const TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.normal),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.normal),
                       filled: true,
-                      fillColor: Colors.grey[200],
+                      fillColor: Theme.of(context).colorScheme.tertiary,
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
@@ -85,10 +86,11 @@ class _ManualRoutesState extends State<ManualRoutes> {
                   TextField(
                     decoration: InputDecoration(
                       hintText: 'Choose Destination',
-                      hintStyle: const TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.normal),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.normal),
                       filled: true,
-                      fillColor: Colors.grey[200],
+                      fillColor: Theme.of(context).colorScheme.tertiary,
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),

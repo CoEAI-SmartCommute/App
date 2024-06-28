@@ -21,14 +21,8 @@ class _ChangeThemeButtonState extends State<ChangeThemeButton> {
         icon: Icon(isDark ? Icons.nightlight_sharp : Icons.sunny),
         color: isDark ? Colors.yellow : Colors.amber,
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return const Center(child: CircularProgressIndicator());
-              });
           final provider = Provider.of<ThemeProvider>(context, listen: false);
           provider.toggleTheme(!isDark);
-          Navigator.of(context).pop();
         },
       ),
     );

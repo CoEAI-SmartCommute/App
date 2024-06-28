@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:smart_commute/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeOptionButton extends StatefulWidget {
   final VoidCallback onPressed;
@@ -13,6 +15,10 @@ class HomeOptionButton extends StatefulWidget {
 class _HomeOptionButtonState extends State<HomeOptionButton> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.themeMode == ThemeMode.dark;
+
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.height * 0.15,
@@ -22,7 +28,7 @@ class _HomeOptionButtonState extends State<HomeOptionButton> {
         height: MediaQuery.of(context).size.height * 0.13,
         width: MediaQuery.of(context).size.width * 0.12,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: theme.colorScheme.background,
           borderRadius: BorderRadius.circular(10),
           boxShadow: const [
             BoxShadow(
@@ -59,9 +65,9 @@ class _HomeOptionButtonState extends State<HomeOptionButton> {
                     child: Center(
                       child: IconButton(
                         onPressed: widget.onPressed,
-                        icon: const Icon(
+                        icon: Icon(
                           FontAwesomeIcons.locationCrosshairs,
-                          color: Colors.blue,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                     ),

@@ -20,7 +20,7 @@ class _ProfileLogoutState extends State<ProfileLogout> {
       child: ElevatedButton.icon(
         style: ButtonStyle(
           backgroundColor: MaterialStatePropertyAll(
-            Colors.grey[300],
+            Theme.of(context).colorScheme.tertiary,
           ),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
@@ -47,11 +47,12 @@ class _ProfileLogoutState extends State<ProfileLogout> {
             ),
           );
         },
-        icon: const Icon(
+        icon: Icon(
           Ionicons.log_out,
-          color: Colors.blue,
+          color: Theme.of(context).colorScheme.primary,
         ),
-        label: const Text('Log Out', style: TextStyle(color: Colors.blue)),
+        label: Text('Log Out',
+            style: TextStyle(color: Theme.of(context).colorScheme.primary)),
       ),
     );
   }

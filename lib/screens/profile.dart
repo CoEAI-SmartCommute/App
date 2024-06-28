@@ -9,20 +9,17 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF7F7F6),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xffF7F7F6),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text(
           'Profile',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
       ),
       body: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-        child: Stack(alignment: Alignment.bottomCenter,
-          children: [
+        child: Stack(alignment: Alignment.bottomCenter, children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

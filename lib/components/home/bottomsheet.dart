@@ -25,7 +25,8 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.themeMode == ThemeMode.dark;
-    final sheetColor = isDark ? Colors.grey[900] : Colors.white;
+
+    // final sheetColor = isDark ? Colors.grey[900] : Colors.white;
     double sheetPosition = MediaQuery.of(context).size.height * 0.00018;
 
     return DraggableScrollableSheet(
@@ -35,7 +36,8 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
-            color: sheetColor,
+            // color: sheetColor,
+            color: theme.colorScheme.background,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             boxShadow: [
               BoxShadow(
@@ -194,12 +196,8 @@ class _ShareLocationButtonState extends State<ShareLocationButton> {
                     currentLocationProvider.currentLocation!.longitude;
                 shareMyLocation(lat: latitude, long: longitude);
               },
-        child: Text(
-          'Share My Location',
-          style: theme.textTheme.labelLarge?.copyWith(
-            color: theme.colorScheme.onSecondary,
-          ),
-        ),
+        child: Text('Share My Location',
+            style: theme.textTheme.labelLarge?.copyWith()),
       ),
     );
   }
@@ -265,9 +263,7 @@ class _ReportButtonState extends State<ReportButton> {
         ),
         child: Text(
           'Report an issue',
-          style: theme.textTheme.labelLarge?.copyWith(
-            color: theme.colorScheme.onSecondary,
-          ),
+          style: theme.textTheme.labelLarge?.copyWith(),
         ),
       ),
     );

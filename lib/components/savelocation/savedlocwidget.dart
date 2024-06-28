@@ -74,7 +74,7 @@ class CustomLocButton extends StatelessWidget {
             ),
             style: IconButton.styleFrom(
               minimumSize: const Size(60, 60),
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
             ),
           ),
           Text(
@@ -121,7 +121,7 @@ class AddLocButton extends StatelessWidget {
             ),
             style: IconButton.styleFrom(
               minimumSize: const Size(60, 60),
-              backgroundColor: Colors.grey[200],
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
             ),
           ),
           const Text(

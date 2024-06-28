@@ -40,43 +40,49 @@ class _ProfileFriendsState extends State<ProfileFriends> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               Text(
                 'Friend Contacts',
                 style: TextStyle(
                   fontSize: 15,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
+              const Expanded(child: SizedBox()),
+              if (noOfContacts < maxNoOfContacts)
+                AddFriendButton(
+                  userid: user!.uid,
+                ),
             ],
           ),
-          const SizedBox(height: 10),
+          // const SizedBox(height: 10),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            // padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 1.5,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ]),
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(10),
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Theme.of(context).shadowColor.withOpacity(0.1),
+              //     spreadRadius: 1.5,
+              //     blurRadius: 5,
+              //     offset: const Offset(0, 3),
+              //   ),
+              // ]
+            ),
             child: Column(
               children: [
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.26,
                     child: ContactsList(userId: user!.uid)),
-                Divider(
-                  color: Colors.grey[300],
-                ),
-                if (noOfContacts < maxNoOfContacts)
-                  AddFriendButton(
-                    userid: user!.uid,
-                  )
+                // Divider(
+                //   color: Theme.of(context).shadowColor,
+                // ),
+                // if (noOfContacts < maxNoOfContacts)
+                //   AddFriendButton(
+                //     userid: user!.uid,
+                //   )
               ],
             ),
           ),
@@ -129,48 +135,57 @@ class _ContactCardState extends State<ContactCard> {
           ),
           child: const Icon(Icons.delete),
         ),
-        child: Row(
-          children: [
-            ProfilePicture(
-              name: widget.name,
-              radius: 24,
-              fontsize: 16,
-              count: 2,
-              random: true,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.name.length > 16
-                        ? '${widget.name.substring(0, 16)}..'
-                        : widget.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                    ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.tertiary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                ProfilePicture(
+                  name: widget.name,
+                  radius: 24,
+                  fontsize: 16,
+                  count: 2,
+                  random: true,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.name.length > 16
+                            ? '${widget.name.substring(0, 16)}..'
+                            : widget.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                      Text(
+                        widget.number,
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).colorScheme.secondary),
+                      ),
+                    ],
                   ),
-                  Text(
-                    widget.number,
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.secondary),
+                ),
+                const Expanded(child: SizedBox()),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Ionicons.call,
+                    color: Color(0xff4CB93A),
+                    size: 25,
                   ),
-                ],
-              ),
+                )
+              ],
             ),
-            const Expanded(child: SizedBox()),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Ionicons.call,
-                color: Color(0xff4CB93A),
-                size: 25,
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -234,52 +249,81 @@ class AddFriendButton extends StatefulWidget {
   State<AddFriendButton> createState() => _AddFriendButtonState();
 }
 
+// class _AddFriendButtonState extends State<AddFriendButton> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 12.0),
+//       child: Row(
+//         children: [
+//           IconButton(
+//             onPressed: () {
+//               showDialog(
+//                 context: context,
+//                 builder: (BuildContext context) {
+//                   return AddContactDialog(userId: widget.userid);
+//                 },
+//               );
+//             },
+//             icon: const Icon(
+//               Ionicons.add,
+//               color: Colors.blue,
+//             ),
+//             style: IconButton.styleFrom(
+//               minimumSize: const Size(50, 50),
+//               backgroundColor: Colors.grey[200],
+//             ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 12.0),
+//             child: TextButton(
+//                 onPressed: () {
+//                   showDialog(
+//                     context: context,
+//                     builder: (BuildContext context) {
+//                       return AddContactDialog(userId: widget.userid);
+//                     },
+//                   );
+//                 },
+//                 style: const ButtonStyle(
+//                     textStyle: MaterialStatePropertyAll(
+//                   TextStyle(
+//                     fontWeight: FontWeight.w500,
+//                     fontSize: 17,
+//                     color: Colors.blue,
+//                   ),
+//                 )),
+//                 child: const Text(' Add Contact')),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 class _AddFriendButtonState extends State<AddFriendButton> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+    return TextButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AddContactDialog(userId: widget.userid);
+          },
+        );
+      },
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AddContactDialog(userId: widget.userid);
-                },
-              );
-            },
-            icon: const Icon(
-              Ionicons.add,
-              color: Colors.blue,
-            ),
-            style: IconButton.styleFrom(
-              minimumSize: const Size(50, 50),
-              backgroundColor: Colors.grey[200],
+          Text(
+            'Add Contact',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AddContactDialog(userId: widget.userid);
-                    },
-                  );
-                },
-                style: const ButtonStyle(
-                    textStyle: MaterialStatePropertyAll(
-                  TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                    color: Colors.blue,
-                  ),
-                )),
-                child: const Text(' Add Contact')),
-          )
         ],
       ),
     );

@@ -29,7 +29,7 @@ class _SaveLocFormState extends State<SaveLocForm> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       insetPadding: const EdgeInsets.all(15),
       child: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -49,8 +49,6 @@ class _SaveLocFormState extends State<SaveLocForm> {
                 const SizedBox(
                   height: 15,
                 ),
-                _buildTagButtons(),
-                const SizedBox(height: 15),
                 _buildActionButtons(),
               ],
             ),
@@ -104,40 +102,6 @@ class _SaveLocFormState extends State<SaveLocForm> {
     );
   }
 
-  Widget _buildTagButtons() {
-    return Column(
-      children: [
-        GroupButton(
-            isRadio: true,
-            onSelected: (value, index, isSelected) {
-              tag = value;
-              setState(() {});
-            },
-            options: GroupButtonOptions(
-                borderRadius: BorderRadius.circular(8),
-                spacing: 12,
-                unselectedColor: Colors.white,
-                selectedColor: Colors.red[300]),
-            buttons: const ["Home", "Work", "Other"]),
-        if (tag == 'Other')
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
-            child: TextFormField(
-              onChanged: (value) {
-                tag = value;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a valid address';
-                }
-                return null;
-              },
-            ),
-          )
-      ],
-    );
-  }
-
   Widget _buildActionButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -146,14 +110,14 @@ class _SaveLocFormState extends State<SaveLocForm> {
           onPressed: () => Navigator.of(context).pop(),
           icon: Icons.close,
           label: 'Cancel',
-          color: Colors.grey[600]!,
+          color: Theme.of(context).colorScheme.secondary,
           iconColor: Colors.blue,
         ),
         CustomFlatButton(
           onPressed: _isUploading ? null : _submitForm,
           icon: _isUploading ? null : Icons.add,
           label: 'Add Address',
-          color: Colors.grey[600]!,
+          color: Theme.of(context).colorScheme.secondary,
           iconColor: Colors.blue,
           isLoading: _isUploading,
         ),

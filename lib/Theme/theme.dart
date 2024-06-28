@@ -12,17 +12,15 @@ ThemeData lightTheme = ThemeData(
     titleTextStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
     iconTheme: IconThemeData(color: Colors.black),
   ),
-  bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: Colors.white,
-  ),
   colorScheme: ColorScheme.light(
     background: Colors.white,
     primary: Colors.blue,
-    secondary: (Colors.grey[200])!,
-    tertiary: const Color(0xffEBEBEB),
+    secondary: (Colors.grey)!,
+    tertiary: Color(0xffEBEBEB),
     surface: Colors.white,
     onSurface: Colors.black,
   ),
+  shadowColor: Colors.grey[200],
 );
 
 ThemeData darkTheme = ThemeData(
@@ -35,15 +33,13 @@ ThemeData darkTheme = ThemeData(
         const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
     iconTheme: const IconThemeData(color: Colors.white),
   ),
-  bottomSheetTheme: BottomSheetThemeData(
-    backgroundColor: Colors.grey[900],
-  ),
   colorScheme: ColorScheme.dark(
-    background: Colors.black,
+    background: (Colors.grey[900])!,
     primary: Colors.blue,
-    secondary: (Colors.grey[200])!,
-    tertiary: const Color(0xFF303030), // Darker color for tertiary in dark mode
+    secondary: (Colors.grey[300])!,
+    tertiary: Color(0xFF303030), // Darker color for tertiary in dark mode
     surface: Colors.grey,
-    onSurface: Colors.black,
+    onSurface: Colors.white,
   ),
+  shadowColor: Colors.grey[500],
 );

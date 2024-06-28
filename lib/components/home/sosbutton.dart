@@ -30,8 +30,8 @@ class _SOSButtonState extends State<SOSButton> {
           backgroundColor: Colors.red,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
-            side: const BorderSide(
-              color: Colors.white,
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.background,
               width: 2,
             ),
           ),

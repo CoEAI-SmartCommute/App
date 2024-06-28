@@ -22,7 +22,7 @@ class AddContactDialogState extends State<AddContactDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       insetPadding: const EdgeInsets.all(15),
       child: Padding(
         padding: const EdgeInsets.all(25.0),
@@ -83,7 +83,7 @@ class AddContactDialogState extends State<AddContactDialog> {
           onPressed: _pickContact,
           icon: Icons.contacts,
           label: 'Import from Contacts',
-          color: Colors.grey[600]!,
+          color: Theme.of(context).colorScheme.secondary,
           iconColor: Colors.blue,
         ),
       ),
@@ -98,14 +98,14 @@ class AddContactDialogState extends State<AddContactDialog> {
           onPressed: () => Navigator.of(context).pop(),
           icon: Icons.close,
           label: 'Cancel',
-          color: Colors.grey[600]!,
+          color: Theme.of(context).colorScheme.secondary,
           iconColor: Colors.blue,
         ),
         CustomFlatButton(
           onPressed: _isUploading ? null : _submitForm,
           icon: _isUploading ? null : Icons.add,
           label: 'Add Contact',
-          color: Colors.grey[600]!,
+          color: Theme.of(context).colorScheme.secondary,
           iconColor: Colors.blue,
           isLoading: _isUploading,
         ),
@@ -186,14 +186,15 @@ class CustomFormField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary, fontSize: 13),
         ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           decoration: InputDecoration(
             hintText: hintText,
-            fillColor: Colors.grey[300],
+            fillColor: Theme.of(context).colorScheme.tertiary,
             filled: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -231,7 +232,7 @@ class CustomFlatButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
