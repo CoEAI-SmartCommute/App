@@ -19,7 +19,7 @@ ThemeData lightTheme = ThemeData(
     background: Colors.white,
     primary: Colors.blue,
     secondary: (Colors.grey[200])!,
-    tertiary: Color(0xffEBEBEB),
+    tertiary: const Color(0xffEBEBEB),
     surface: Colors.white,
     onSurface: Colors.black,
   ),
@@ -31,8 +31,9 @@ ThemeData darkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.grey[900],
     elevation: 0,
-    titleTextStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-    iconTheme: IconThemeData(color: Colors.white),
+    titleTextStyle:
+        const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    iconTheme: const IconThemeData(color: Colors.white),
   ),
   bottomSheetTheme: BottomSheetThemeData(
     backgroundColor: Colors.grey[900],
@@ -41,7 +42,7 @@ ThemeData darkTheme = ThemeData(
     background: Colors.black,
     primary: Colors.blue,
     secondary: (Colors.grey[200])!,
-    tertiary: Color(0xFF303030), // Darker color for tertiary in dark mode
+    tertiary: const Color(0xFF303030), // Darker color for tertiary in dark mode
     surface: Colors.grey,
     onSurface: Colors.black,
   ),

@@ -4,6 +4,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart_commute/components/toast/toast.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:bubble/bubble.dart';
@@ -178,7 +179,6 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void _showErrorMessage(String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    errorToast(message);
   }
 }

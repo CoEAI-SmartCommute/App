@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 
 class AddContactDialog extends StatefulWidget {
   final String userId;
@@ -149,13 +150,11 @@ class AddContactDialogState extends State<AddContactDialog> {
           .collection('friend_contacts')
           .add(contactData);
 
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      successfulToast('${_nameController.text} has been added');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading contact: $e')),
-      );
+      errorToast('Error uploading contact: $e');
     } finally {
       setState(() {
         _isUploading = false;

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 import 'package:smart_commute/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_commute/screens/permission.dart';
@@ -66,26 +68,18 @@ class RegisterScreenState extends State<RegisterScreen> {
 
       try {
         await FirebaseFirestore.instance.collection('users').doc(uid).set(data);
-
         await _saveUserDataLocally(data);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful!')),
-        );
-
+        successfulToast("Registration successful");
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const PermissionScreen()),
         );
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to register: $e')),
-        );
+        errorToast("Failed to register: $e");
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields correctly')),
-      );
+      errorToast("Please fill all fields correctly");
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 
 class SaveLocForm extends StatefulWidget {
   final GeoPoint point;
@@ -186,19 +187,12 @@ class _SaveLocFormState extends State<SaveLocForm> {
           .doc(user!.uid)
           .collection('saved_locations')
           .add(addressData);
-
-      if (mounted) {
-        Navigator.of(context).pop();
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Address added successfully')),
-        );
-      }
-    } catch (e) {
+      _formKey.currentState!.reset();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading contact: $e')),
-      );
+      Navigator.pop(context);
+      successfulToast('Address added successfully');
+    } catch (e) {
+      errorToast('Error uploading contact: $e');
     } finally {
       setState(() {
         _isUploading = false;

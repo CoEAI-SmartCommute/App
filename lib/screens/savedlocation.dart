@@ -3,6 +3,7 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:smart_commute/components/savelocation/savelocform.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 import 'package:smart_commute/services/getstatecity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as cfs;
 
@@ -28,9 +29,11 @@ class SaveLocationScreenState extends State<SaveLocationScreen> {
       latitude: userLocation.latitude!,
       longitude: userLocation.longitude!,
     );
+
     Map<String, String> resp =
         await getCityAndState(newLocation.latitude, newLocation.longitude);
     setState(() {
+      selectedPoint = newLocation;
       selectedCity = resp['city']!;
       selectedState = resp['state']!;
     });
@@ -170,6 +173,10 @@ class SaveLocationScreenState extends State<SaveLocationScreen> {
             ),
             ElevatedButton(
                 onPressed: () {
+                  if (selectedPoint == null) {
+                    errorToast("Please mark a point on the map");
+                    return;
+                  }
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {

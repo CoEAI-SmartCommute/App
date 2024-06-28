@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 import 'package:smart_commute/providers/location_provider.dart';
 import 'package:smart_commute/services/camera.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -169,11 +170,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     onPressed: () {
                       formKey.currentState!.validate();
                       if (_selectedImage == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select an image.'),
-                          ),
-                        );
+                        nullToast('Please select an image');
                         return;
                       }
                       submitForm();
@@ -258,11 +255,7 @@ class _ReportScreenState extends State<ReportScreen> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage == null) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('We are facing some issue.Try again later'),
-        ),
-      );
+      errorToast('We are facing some issue.Try again later');
       return;
     }
     setState(() {
@@ -363,33 +356,16 @@ class _ReportScreenState extends State<ReportScreen> {
       }
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.brown,
-          content: Text(
-            "Reported successfully",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      );
-      // formKey.currentState!.reset();
+
+      successfulToast('Reported successfully');
+
       _descriptionController.text = "";
       _selectedImage = null;
       setState(() {});
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.toString(),
-          ),
-        ),
-      );
+      errorToast(e.toString());
     }
   }
 }

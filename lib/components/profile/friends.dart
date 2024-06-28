@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
+import 'package:smart_commute/components/toast/toast.dart';
 import 'package:smart_commute/var.dart';
 
 class ProfileFriends extends StatefulWidget {
@@ -116,16 +117,9 @@ class _ContactCardState extends State<ContactCard> {
                 .collection('friend_contacts')
                 .doc(widget.id)
                 .delete();
-            if (!context.mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Contact deleted succesfully.')),
-            );
+            successfulToast('Contact deleted successfully.');
           } catch (e) {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(e.toString())),
-              );
-            }
+            errorToast(e.toString());
           }
         },
         background: Container(
