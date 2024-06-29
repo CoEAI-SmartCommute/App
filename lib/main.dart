@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_commute/Theme/theme.dart';
 import 'package:smart_commute/providers/location_provider.dart';
@@ -16,6 +17,7 @@ import 'package:smart_commute/providers/shake_provider.dart';
 import 'package:smart_commute/providers/theme_provider.dart';
 import 'package:smart_commute/screens/home.dart';
 import 'package:smart_commute/screens/permission.dart';
+import 'package:smart_commute/services/foreground_service.dart';
 import 'package:smart_commute/services/permissioncheck.dart';
 
 void main() async {
@@ -69,13 +71,32 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   late Future<Widget> _initialScreen;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    ForegroundTaskInitializer.init();
     _initialScreen = _checkUserRegistered();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      // App is in background
+      ForegroundTaskInitializer.startForegroundTask();
+    } else if (state == AppLifecycleState.resumed) {
+      // App is in foreground
+      ForegroundTaskInitializer.stopForegroundTask();
+    }
   }
 
   @override

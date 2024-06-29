@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:smart_commute/components/confirmdialog.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
 import 'package:smart_commute/components/toast/toast.dart';
 import 'package:smart_commute/var.dart';
@@ -63,7 +64,7 @@ class _ProfileFriendsState extends State<ProfileFriends> {
           child: Column(
             children: [
               SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.26,
+                  height: MediaQuery.of(context).size.height * 0.32,
                   child: ContactsList(userId: user!.uid)),
             ],
           ),
@@ -97,16 +98,21 @@ class _ContactCardState extends State<ContactCard> {
       child: Dismissible(
         key: UniqueKey(),
         onDismissed: (direction) async {
-          try {
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(user!.uid)
-                .collection('friend_contacts')
-                .doc(widget.id)
-                .delete();
-            successfulToast('Contact deleted successfully.');
-          } catch (e) {
-            errorToast(e.toString());
+          bool flag = await showConfirmDialog(context) ?? false;
+          if (flag) {
+            try {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user!.uid)
+                  .collection('friend_contacts')
+                  .doc(widget.id)
+                  .delete();
+              successfulToast('Contact deleted successfully.');
+            } catch (e) {
+              errorToast(e.toString());
+            }
+          } else {
+            setState(() {});
           }
         },
         background: Container(
