@@ -139,7 +139,9 @@ class _HomeBottomSheetState extends State<HomeBottomSheet> {
                   const SizedBox(height: 20),
                   const ManualRoutes(),
                   const SizedBox(height: 20),
-                  const SavedLocations(),
+                  const SavedList(
+                    isAdd: true,
+                  ),
                   const SizedBox(height: 20),
                   const SuggestionsAi(),
                   const SizedBox(height: 20),

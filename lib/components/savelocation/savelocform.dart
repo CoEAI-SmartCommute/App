@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:group_button/group_button.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
 import 'package:smart_commute/components/toast/toast.dart';
 
@@ -44,6 +45,8 @@ class _SaveLocFormState extends State<SaveLocForm> {
                 const SizedBox(height: 15),
                 _buildAddressField(),
                 const SizedBox(height: 15),
+                _buildTagButtons(),
+                const SizedBox(height: 15),
                 _buildCSField(),
                 const SizedBox(
                   height: 15,
@@ -54,6 +57,25 @@ class _SaveLocFormState extends State<SaveLocForm> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTagButtons() {
+    return Column(
+      children: [
+        GroupButton(
+          isRadio: true,
+          onSelected: (value, index, isSelected) {
+            tag = value;
+          },
+          options: GroupButtonOptions(
+              borderRadius: BorderRadius.circular(8),
+              spacing: 12,
+              unselectedColor: Colors.white,
+              selectedColor: Colors.red[300]),
+          buttons: const ["Home", "Work", "Other"],
+        ),
+      ],
     );
   }
 
@@ -131,6 +153,11 @@ class _SaveLocFormState extends State<SaveLocForm> {
   }
 
   Future<void> _uploadLocation() async {
+    _formKey.currentState!.validate();
+    if (tag == '') {
+      errorToast('Please select the tag');
+      return;
+    }
     setState(() {
       _isUploading = true;
     });

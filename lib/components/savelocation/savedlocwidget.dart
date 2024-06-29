@@ -1,57 +1,90 @@
+import 'package:cloud_firestore/cloud_firestore.dart' as cfs;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:smart_commute/screens/savedlocation.dart';
 
-class SavedLocations extends StatefulWidget {
-  const SavedLocations({super.key});
+class SavedList extends StatelessWidget {
+  const SavedList({super.key, required this.isAdd});
+  final bool isAdd;
+  get user => FirebaseAuth.instance.currentUser;
 
-  @override
-  State<SavedLocations> createState() => _SavedLocationsState();
-}
+  Future<List<Map<String, String>>> fetchSavedLocations() async {
+    cfs.QuerySnapshot querySnapshot = await cfs.FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('saved_locations')
+        .orderBy('tag')
+        .get();
 
-class _SavedLocationsState extends State<SavedLocations> {
+    return querySnapshot.docs.map((doc) {
+      return {
+        'name': doc['name'] as String,
+        'address': doc['address'] as String,
+        'tag': doc['tag'] as String
+      };
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Your Saved Locations',
-            style: TextStyle(fontSize: 15, color: Colors.grey),
-          ),
-          GestureDetector(
-            onTap: () {
-              // Implement your "More" functionality here
-            },
-            child: const Text(
-              'More',
+    return FutureBuilder<List<Map<String, String>>>(
+      future: fetchSavedLocations(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No saved locations'));
+        }
+
+        List<Map<String, String>> savedLocations = snapshot.data!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              'Saved Locations',
               style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
                 fontSize: 15,
-                color: Colors.blue,
               ),
             ),
-          ),
-        ],
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomLocButton(
-            title: 'Home',
-            icon: Ionicons.home,
-          ),
-          CustomLocButton(
-            title: 'Work',
-            icon: Ionicons.business,
-          ),
-          AddLocButton()
-        ],
-      )
-    ]);
+            const SizedBox(height: 8),
+            SingleChildScrollView(
+              physics: const ScrollPhysics(),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...List.generate(
+                    savedLocations.length > 3 && isAdd
+                        ? 3
+                        : savedLocations.length,
+                    (index) {
+                      Map<String, String> location = savedLocations[index];
+                      IconData icon = (location['tag'] == 'Home')
+                          ? Icons.home
+                          : (location['tag'] == 'Work')
+                              ? Icons.work
+                              : Icons.location_on_sharp;
+                      return CustomLocButton(
+                        title: location['name'] ?? 'New Location',
+                        icon: icon,
+                      );
+                    },
+                  ),
+                  if (isAdd) const AddLocButton()
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 
@@ -84,14 +117,6 @@ class CustomLocButton extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          Text(
-            'Add',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          )
         ],
       ),
     );
