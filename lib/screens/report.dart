@@ -36,14 +36,12 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffF7F7F6),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xffF7F7F6),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text(
           'Report',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
       ),
       body: Padding(
@@ -55,16 +53,18 @@ class _ReportScreenState extends State<ReportScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Location',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
                 Container(
                   height: 40,
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                      color: const Color(0xffEEEEEE),
+                      color: Theme.of(context).colorScheme.tertiary,
                       borderRadius: BorderRadius.circular(8)),
                   alignment: Alignment.center,
                   child: Text(
@@ -74,19 +74,24 @@ class _ReportScreenState extends State<ReportScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                const Text(
+                Text(
                   'Describe the unsafe situation',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.secondary),
                 ),
                 TextFormField(
                   controller: _descriptionController,
                   minLines: 8,
                   maxLines: 10,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
-                    fillColor: Color(0xffEEEEEE),
+                    fillColor: Theme.of(context).colorScheme.tertiary,
                     border: InputBorder.none,
                     hintText: 'Type your inputs...',
+                    hintStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -101,19 +106,25 @@ class _ReportScreenState extends State<ReportScreen> {
                 DottedBorder(
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(8),
-                  color: const Color(0xffE8E8E8),
+                  color: Theme.of(context).colorScheme.secondary,
                   strokeWidth: 2,
                   child: (_selectedImage == null)
                       ? Container(
                           width: MediaQuery.of(context).size.width,
                           height: 140,
                           decoration: BoxDecoration(
-                              color: const Color(0xffF3F3F3),
+                              color: Theme.of(context).colorScheme.tertiary,
                               borderRadius: BorderRadius.circular(8)),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Select images to upload…'),
+                              Text(
+                                'Select images to upload…',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
+                              ),
                               MaterialButton(
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -121,11 +132,14 @@ class _ReportScreenState extends State<ReportScreen> {
                                     50,
                                   ),
                                 ),
-                                color: const Color(0xffe8e8e8),
+                                color: Theme.of(context).colorScheme.primary,
                                 onPressed: () {
                                   imgInput();
                                 },
-                                child: const Text('Browse Images'),
+                                child: const Text(
+                                  'Browse Images',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               )
                             ],
                           ),
@@ -157,8 +171,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   height: 48,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(
-                        Color(0xffEBEBEB),
+                      backgroundColor: MaterialStatePropertyAll(
+                        Theme.of(context).colorScheme.tertiary,
                       ),
                       shape: MaterialStatePropertyAll(
                         RoundedRectangleBorder(

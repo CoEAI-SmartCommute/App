@@ -37,57 +37,38 @@ class _ProfileFriendsState extends State<ProfileFriends> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                'Friend Contacts',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              'Friend Contacts',
+              style: TextStyle(
+                fontSize: 15,
+                color: Theme.of(context).colorScheme.secondary,
               ),
-              const Expanded(child: SizedBox()),
-              if (noOfContacts < maxNoOfContacts)
-                AddFriendButton(
-                  userid: user!.uid,
-                ),
+            ),
+            const Expanded(child: SizedBox()),
+            if (noOfContacts < maxNoOfContacts)
+              AddFriendButton(
+                userid: user!.uid,
+              ),
+          ],
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.26,
+                  child: ContactsList(userId: user!.uid)),
             ],
           ),
-          // const SizedBox(height: 10),
-          Container(
-            // padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(10),
-              // boxShadow: [
-              //   BoxShadow(
-              //     color: Theme.of(context).shadowColor.withOpacity(0.1),
-              //     spreadRadius: 1.5,
-              //     blurRadius: 5,
-              //     offset: const Offset(0, 3),
-              //   ),
-              // ]
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.26,
-                    child: ContactsList(userId: user!.uid)),
-                // Divider(
-                //   color: Theme.of(context).shadowColor,
-                // ),
-                // if (noOfContacts < maxNoOfContacts)
-                //   AddFriendButton(
-                //     userid: user!.uid,
-                //   )
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

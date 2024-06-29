@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:group_button/group_button.dart';
 import 'package:smart_commute/components/profile/addfriend.dart';
 import 'package:smart_commute/components/toast/toast.dart';
 
