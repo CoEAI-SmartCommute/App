@@ -9,14 +9,14 @@ class RecentComments extends StatelessWidget {
   Widget build(BuildContext context) {
     int commentsToShow = comments.length;
     return Scaffold(
-      // appBar: AppBar,
-      backgroundColor: const Color(0xffF7F7F6),
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xffF7F7F6),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         title: const Text(
           'Recent Updates',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
       ),
@@ -76,7 +76,10 @@ class RecentComments extends StatelessWidget {
                     children: [
                       commentWidget,
                       Divider(
-                        color: Colors.grey[300],
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.4),
                       ),
                     ],
                   );

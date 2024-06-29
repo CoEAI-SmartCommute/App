@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -53,56 +54,64 @@ class _ReportScreenState extends State<ReportScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Location',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                Container(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(8)),
-                  alignment: Alignment.center,
-                  child: Text(
-                    '${context.watch<LocationProvider>().currentLocation!.latitude} , ${context.watch<LocationProvider>().currentLocation!.longitude}',
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  'Describe the unsafe situation',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                TextFormField(
-                  controller: _descriptionController,
-                  minLines: 8,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.tertiary,
-                    border: InputBorder.none,
-                    hintText: 'Type your inputs...',
-                    hintStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a valid description';
-                    }
-                    return null;
-                  },
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    Container(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(8)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${context.watch<LocationProvider>().currentLocation!.latitude} , ${context.watch<LocationProvider>().currentLocation!.longitude}',
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 11,
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Describe the unsafe situation',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Theme.of(context).colorScheme.secondary),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                    TextFormField(
+                      controller: _descriptionController,
+                      minLines: 8,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Theme.of(context).colorScheme.tertiary,
+                        border: InputBorder.none,
+                        hintText: 'Type your inputs...',
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter a valid description';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 DottedBorder(
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(8),
@@ -295,10 +304,6 @@ class _ReportScreenState extends State<ReportScreen> {
       final status = await Permission.storage.request();
       havePermission = status.isGranted;
     }
-
-    // if (!havePermission) {
-    //   await openAppSettings();
-    // }
 
     return havePermission;
   }

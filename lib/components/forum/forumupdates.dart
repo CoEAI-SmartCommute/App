@@ -10,8 +10,6 @@ class RecentUpdates extends StatefulWidget {
 }
 
 class RecentUpdatesState extends State<RecentUpdates> {
-  // bool showAll = false;
-
   final List<Map<String, String>> placeholderComments = [
     {
       'name': 'Sushobhan Nayak',
@@ -56,7 +54,6 @@ class RecentUpdatesState extends State<RecentUpdates> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  // showAll = !showAll;
                   Navigator.of(context).push(
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 500),
@@ -142,7 +139,8 @@ class RecentUpdatesState extends State<RecentUpdates> {
               children: [
                 commentWidget,
                 Divider(
-                  color: Colors.grey[300],
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.4),
                 ),
               ],
             );

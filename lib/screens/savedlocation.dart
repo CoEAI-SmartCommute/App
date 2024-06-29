@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ionicons/ionicons.dart';
@@ -186,9 +187,7 @@ class SaveLocationScreenState extends State<SaveLocationScreen> {
                             : '${selectedPoint!.latitude} , ${selectedPoint!.longitude}',
                       ),
                     ),
-                    const SavedList(
-                      isAdd: false,
-                    ),
+                    const SavedList(),
                     const Expanded(child: SizedBox()),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
@@ -363,6 +362,106 @@ class _AddAddressState extends State<AddAddress> {
         label: Text('Add Address',
             style: TextStyle(color: Theme.of(context).colorScheme.primary)),
       ),
+    );
+  }
+}
+
+class SavedList extends StatelessWidget {
+  const SavedList({super.key});
+  get user => FirebaseAuth.instance.currentUser;
+
+  Future<List<Map<String, String>>> fetchSavedLocations() async {
+    cfs.QuerySnapshot querySnapshot = await cfs.FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('saved_locations')
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      return {
+        'name': doc['name'] as String,
+        'address': doc['address'] as String,
+      };
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Map<String, String>>>(
+      future: fetchSavedLocations(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No saved locations'));
+        }
+
+        List<Map<String, String>> savedLocations = snapshot.data!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              'Saved Locations',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...List.generate(savedLocations.length, (index) {
+              Map<String, String> location = savedLocations[index];
+
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.home, color: Colors.grey, size: 24),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                location['name']!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                location['address']!,
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (index < savedLocations.length - 1)
+                    Divider(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.4)),
+                ],
+              );
+            }),
+          ],
+        );
+      },
     );
   }
 }

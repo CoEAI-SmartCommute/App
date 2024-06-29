@@ -35,14 +35,13 @@ class HomeScreenState extends State<HomeScreen> {
     });
     return Scaffold(
       appBar: AppBar(
-        backgroundColor:
-            themeProvider.isDarkMode ? Colors.grey[900] : Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: theme.appBarTheme.elevation,
-        title: Text(
+        title: const Text(
           'Home',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: theme.appBarTheme.titleTextStyle?.color,
+            fontSize: 20.0,
           ),
         ),
         iconTheme: theme.appBarTheme.iconTheme,
