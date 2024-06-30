@@ -37,8 +37,11 @@ class SavedList extends StatelessWidget {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No saved locations'));
+        if (!isAdd && (!snapshot.hasData || snapshot.data!.isEmpty)) {
+          return const Center(child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Text('No saved locations'),
+          ));
         }
 
         List<Map<String, String>> savedLocations = snapshot.data!;
