@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-Future<bool?> showConfirmDialog(BuildContext context) {
+Future<bool?> showConfirmDialog(BuildContext context, String content) {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Confirm'),
-        content: const Text(
-            'Do you want this emergency contact removed ?'),
+        // content: const Text(
+        //     'Do you want this emergency contact removed ?'),
+        content: Text(content),
         actions: <Widget>[
           TextButton(
             onPressed: () {

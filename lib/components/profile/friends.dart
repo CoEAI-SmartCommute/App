@@ -98,7 +98,9 @@ class _ContactCardState extends State<ContactCard> {
       child: Dismissible(
         key: UniqueKey(),
         onDismissed: (direction) async {
-          bool flag = await showConfirmDialog(context) ?? false;
+          bool flag = await showConfirmDialog(
+                  context, 'Do you want this emergency contact removed ?') ??
+              false;
           if (flag) {
             try {
               await FirebaseFirestore.instance

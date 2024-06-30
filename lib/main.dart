@@ -77,27 +77,27 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addObserver(this);
-    // ForegroundTaskInitializer.init();
+    WidgetsBinding.instance.addObserver(this);
+    ForegroundTaskInitializer.init();
     _initialScreen = _checkUserRegistered();
   }
 
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance.removeObserver(this);
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.paused) {
-  //     // App is in background
-  //     ForegroundTaskInitializer.startForegroundTask();
-  //   } else if (state == AppLifecycleState.resumed) {
-  //     // App is in foreground
-  //     ForegroundTaskInitializer.stopForegroundTask();
-  //   }
-  // }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      // App is in background
+      ForegroundTaskInitializer.startForegroundTask();
+    } else if (state == AppLifecycleState.resumed) {
+      // App is in foreground
+      ForegroundTaskInitializer.stopForegroundTask();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

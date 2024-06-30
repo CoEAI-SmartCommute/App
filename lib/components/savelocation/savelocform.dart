@@ -45,7 +45,7 @@ class _SaveLocFormState extends State<SaveLocForm> {
                 const SizedBox(height: 15),
                 _buildAddressField(),
                 const SizedBox(height: 15),
-                _buildTagButtons(),
+                Center(child: _buildTagButtons()),
                 const SizedBox(height: 15),
                 _buildCSField(),
                 const SizedBox(
@@ -71,8 +71,12 @@ class _SaveLocFormState extends State<SaveLocForm> {
           options: GroupButtonOptions(
               borderRadius: BorderRadius.circular(8),
               spacing: 12,
-              unselectedColor: Colors.white,
-              selectedColor: Colors.red[300]),
+              unselectedTextStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.secondary),
+              selectedTextStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.secondary),
+              unselectedColor: Theme.of(context).colorScheme.tertiary,
+              selectedColor: Theme.of(context).colorScheme.primary),
           buttons: const ["Home", "Work", "Other"],
         ),
       ],
@@ -97,13 +101,19 @@ class _SaveLocFormState extends State<SaveLocForm> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          'City : ${widget.city}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
+        Text('City : ${widget.city}',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.surface,
+            )),
         Text(
           'State : ${widget.state}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.surface,
+          ),
         )
       ],
     );
